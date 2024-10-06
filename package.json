@@ -11,6 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@capacitor/cli": "^6.1.2",
+    "@capacitor/core": "^6.1.2",
     "@quasar/extras": "^1.16.12",
     "@quasar/vite-plugin": "^1.7.0",
     "quasar": "^2.17.0",
