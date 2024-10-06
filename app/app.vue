@@ -1,7 +1,7 @@
 <template>
     <q-layout view="hHh lpR fFf">
         <q-page-container>
-            <h1>NARF</h1>
+            <h1>NARF 2</h1>
         </q-page-container>
 
         <q-footer elevated class="bg-grey-8 text-white">
