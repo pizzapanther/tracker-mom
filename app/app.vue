@@ -18,3 +18,13 @@
         </q-footer>
     </q-layout>
 </template>
+<script>
+import start_bg_watcher from '@/bg-location.js';
+
+export default {
+  setup () {
+    console.log('NARF SETUP');
+    start_bg_watcher();
+  }
+}
+</script>

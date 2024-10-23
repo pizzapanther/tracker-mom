@@ -1,5 +1,8 @@
 {
   "appId": "mom.tracker.app",
   "appName": "Tracker Mom",
-  "webDir": "dist"
+  "webDir": "dist",
+  "android": {
+    "useLegacyBridge": true
+  }
 }

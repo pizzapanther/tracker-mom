@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Open source mobile app for keeping track of your family of friend's location without compromising your privacy.",
   "main": "app/index.html",
-  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --watch app -e js,vue,html,png,jpg -x \"vite build && cap sync\""
@@ -11,10 +10,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@capacitor-community/background-geolocation": "^1.2.19",
     "@capacitor/android": "^6.1.2",
     "@capacitor/cli": "^6.1.2",
     "@capacitor/core": "^6.1.2",
     "@capacitor/ios": "^6.1.2",
+    "@capacitor/local-notifications": "^6.1.0",
     "@quasar/extras": "^1.16.12",
     "@quasar/vite-plugin": "^1.7.0",
     "nodemon": "^3.1.7",
