@@ -1,0 +1,32 @@
+services:
+  django:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: /bin/bash
+    volumes:
+      - .:/app
+    ports:
+      - 8000:8000
+    depends_on:
+      - redis
+      - postgresql
+    shm_size: 4gb
+
+  redis:
+      image: 'bitnami/redis:latest'
+      ports:
+        - 6379
+      environment:
+        - ALLOW_EMPTY_PASSWORD=yes
+
+  postgresql:
+      image: postgis/postgis:15-master
+      ports:
+        - 5432
+      volumes:
+        - "$HOME/pgdata/tmom:/var/lib/postgresql/data"
+      environment:
+        - POSTGRES_DB=tmomdb
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=passyword

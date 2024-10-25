@@ -1,0 +1,9 @@
+[project]
+name = "tmom"
+version = "0.1.0"
+description = "Tracker Mom server app"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "django>=5.1.2",
+]
