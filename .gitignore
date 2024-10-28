@@ -129,7 +129,9 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+__pycache__
 .python-version
+.pdm-python
 *.pyc
 .bash_history
 .python_history
