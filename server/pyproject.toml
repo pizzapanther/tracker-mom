@@ -15,3 +15,6 @@ license = {text = "AGPL-3.0"}
 
 [tool.pdm]
 distribution = false
+
+[tool.pdm.scripts]
+dev = "python manage.py runserver 0.0.0.0:8000"
