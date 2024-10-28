@@ -1,7 +1,7 @@
 [project]
 name = "tmom"
 version = "0.1.0"
-description = "Default template for PDM package"
+description = "Tracker Mom server"
 authors = [
     {name = "Paul Bailey", email = "paul@neutron.studio"},
 ]
