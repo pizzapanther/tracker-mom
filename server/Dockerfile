@@ -23,3 +23,4 @@ ENV UV_LINK_MODE=copy
 RUN /tmp/dx_init.bsh
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 RUN pipx ensurepath && pipx install pdm && pipx inject pdm pdm-django
+RUN pipx install ruff
