@@ -42,6 +42,7 @@ INSTALLED_APPS = [
   "allauth.account",
   "widget_tweaks",
   "slippers",
+  "simple_history",
   "tmom.exchange",
 ]
 
@@ -54,6 +55,7 @@ MIDDLEWARE = [
   "django.contrib.messages.middleware.MessageMiddleware",
   "django.middleware.clickjacking.XFrameOptionsMiddleware",
   "allauth.account.middleware.AccountMiddleware",
+  "simple_history.middleware.HistoryRequestMiddleware",
 ]
 
 ROOT_URLCONF = "tmom.urls"
@@ -137,10 +139,11 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'
 ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
+LOGIN_REDIRECT_URL = '/'
 # ACCOUNT_EMAIL_VERIFICATION = True
 
 ALLAUTH_UI_THEME = "emerald"
