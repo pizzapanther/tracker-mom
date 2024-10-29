@@ -37,13 +37,12 @@ INSTALLED_APPS = [
   "django.contrib.sessions",
   "django.contrib.messages",
   "django.contrib.staticfiles",
-
   "allauth_ui",
   "allauth",
   "allauth.account",
-
   "widget_tweaks",
   "slippers",
+  "tmom.exchange",
 ]
 
 MIDDLEWARE = [
