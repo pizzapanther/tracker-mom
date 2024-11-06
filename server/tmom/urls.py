@@ -18,7 +18,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from tmom.api import api_v1
+
 urlpatterns = [
   path("admin/", admin.site.urls),
   path("accounts/", include("allauth.urls")),
+  path("api/v1/", api_v1.urls, name="api_v1"),
 ]

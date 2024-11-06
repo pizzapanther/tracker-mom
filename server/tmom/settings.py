@@ -43,6 +43,7 @@ INSTALLED_APPS = [
   "widget_tweaks",
   "slippers",
   "simple_history",
+  "ninja",
   "tmom.exchange",
 ]
 
@@ -147,3 +148,6 @@ LOGIN_REDIRECT_URL = '/'
 # ACCOUNT_EMAIL_VERIFICATION = True
 
 ALLAUTH_UI_THEME = "emerald"
+
+# in Minutes
+FOLLOW_REQUEST_EXPIRATION = 60 * 24 * 3
