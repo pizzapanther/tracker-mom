@@ -13,17 +13,13 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-y@!$q9u^z@h16z5b-pv3!m7v69)^lq4d8k_m4(x3+w)qhz13wf"
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -151,3 +147,5 @@ ALLAUTH_UI_THEME = "emerald"
 
 # in Minutes
 FOLLOW_REQUEST_EXPIRATION = 60 * 24 * 3
+
+APP_BASE_URL = 'https://app.tracker.mom'

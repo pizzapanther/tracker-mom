@@ -1,7 +1,10 @@
 import random
 
+import jwt
 from ninja import Router, Schema
 from wonderwords import RandomWord
+
+from django.conf import settings
 
 from tmom.exchange.models import FollowRequest
 
@@ -9,7 +12,7 @@ router = Router()
 
 
 class MessageSchema(Schema):
-  message: str
+  status: str
   url: str
 
 
@@ -29,7 +32,8 @@ def request_location_share(request, data: FollowInput):
     if FollowRequest.objects.filter(code=code).count() == 0:
       break
 
-  req = FollowRequest()
+  req = FollowRequest(owner=request.user, code=code, pubkey=data.pubkey)
   req.save()
 
-  return {'message': 'narf', 'url': 'url-out'}
+  encoded = jwt.encode({"invite-code": code}, settings.SECRET_KEY, algorithm="HS256")
+  return {'status': 'OK', 'url': f'{settings.APP_BASE_URL}/account/accept-invite/{encoded}'}
