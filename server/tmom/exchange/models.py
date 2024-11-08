@@ -38,7 +38,7 @@ class FollowRequest(models.Model):
   pubkey = models.TextField()
 
   used_on = models.DateTimeField(blank=True, null=True)
-  used_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="accepted_requests")
+  used_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="accepted_requests", blank=True, null=True)
 
   created = models.DateTimeField(db_default=Now())
 
