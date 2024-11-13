@@ -79,3 +79,13 @@ def accept_location_share(request, data: AcceptInput):
   req.save()
 
   return {'email': req.user.email, 'pubkey': req.pubkey}
+
+
+class AuthSchema(Schema):
+  id: int
+  expires: str
+
+
+@router.get('/auth/check', response=AuthSchema)
+def auth_check(request):
+  return {'id': request.user.id, 'expires': request.session.get_expiry_date().isoformat()}
