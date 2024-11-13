@@ -14,22 +14,12 @@ from tmom.exchange.models import FollowRequest, Follow
 router = Router()
 
 
-class ShareSchema(Schema):
-  email: str
-  pubkey: str
-
-
 class InviteSchema(Schema):
   status: str
   url: str
 
 
 class FollowInput(Schema):
-  pubkey: str
-
-
-class AcceptInput(Schema):
-  token: str
   pubkey: str
 
 
@@ -56,6 +46,17 @@ def request_location_share(request, data: FollowInput):
   return {'status': 'OK', 'url': f'{settings.APP_BASE_URL}/account/accept-invite/{encoded}'}
 
 
+class ShareSchema(Schema):
+  email: str
+  pubkey: str
+  name: str
+
+
+class AcceptInput(Schema):
+  token: str
+  pubkey: str
+
+
 @router.post('/follow/accept', response=ShareSchema)
 def accept_location_share(request, data: AcceptInput):
   try:
@@ -78,7 +79,7 @@ def accept_location_share(request, data: AcceptInput):
   req.used_on = timezone.now()
   req.save()
 
-  return {'email': req.user.email, 'pubkey': req.pubkey}
+  return {'name': req.user.get_full_name() or req.user.email, 'email': req.user.email, 'pubkey': req.pubkey}
 
 
 class AuthSchema(Schema):
