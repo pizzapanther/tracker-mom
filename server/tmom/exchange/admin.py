@@ -7,8 +7,8 @@ from tmom.exchange.models import Follow
 
 @admin.register(Follow)
 class FollowAdmin(SimpleHistoryAdmin):
-  list_display = ('owner', 'following', 'approved', 'active', 'created')
+  list_display = ('owner', 'following', 'active', 'created')
   date_hierarchy = 'created'
-  list_filter = ('approved', 'active')
+  list_filter = ('active',)
   search_fields = ('owner__email', 'following__email')
   raw_id_fields = ('owner', 'following')

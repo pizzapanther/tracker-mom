@@ -18,7 +18,6 @@ class Follow(models.Model):
   pubkey = models.TextField()
 
   active = models.BooleanField(default=True)
-  approved = models.BooleanField(default=False)
 
   created = models.DateTimeField(db_default=Now())
 
