@@ -101,4 +101,4 @@ def auth_check(request):
 @router.get("/follow/list", response=List[FollowSchema])
 @paginate
 def follow_list(request):
-  return Follow.objects.filter(owner=request.user)
+  return Follow.objects.filter(owner=request.user).order_by('-created')
