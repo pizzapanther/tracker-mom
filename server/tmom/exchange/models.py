@@ -19,7 +19,7 @@ class Follow(models.Model):
     settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="followers"
   )
 
-  pubkey = models.TextField()
+  follow_pubkey = models.TextField()
 
   active = models.BooleanField(default=True)
 
@@ -32,6 +32,18 @@ class Follow(models.Model):
 
   def __str__(self):
     return f"{self.owner} -> {self.following}"
+
+  @property
+  def name(self):
+    return self.following.get_full_name() or self.following.email
+
+  @property
+  def email(self):
+    return self.following.email
+
+  @property
+  def pubkey(self):
+    return self.follow_pubkey
 
 
 class FollowRequest(models.Model):

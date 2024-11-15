@@ -1,9 +1,11 @@
 import datetime
 import random
+from typing import List
 
 import jwt
-from ninja import Router, Schema
+from ninja import Router, Schema, ModelSchema
 from ninja.errors import HttpError
+from ninja.pagination import paginate
 from wonderwords import RandomWord
 
 from django.conf import settings
@@ -46,10 +48,14 @@ def request_location_share(request, data: FollowInput):
   return {"status": "OK", "url": f"{settings.APP_BASE_URL}/account/accept-invite/{encoded}"}
 
 
-class ShareSchema(Schema):
+class FollowSchema(ModelSchema):
   email: str
   pubkey: str
   name: str
+
+  class Meta:
+    model = Follow
+    fields = ['id']
 
 
 class AcceptInput(Schema):
@@ -57,7 +63,7 @@ class AcceptInput(Schema):
   pubkey: str
 
 
-@router.post("/follow/accept", response=ShareSchema)
+@router.post("/follow/accept", response=FollowSchema)
 def accept_location_share(request, data: AcceptInput):
   try:
     payload = jwt.decode(data.token, settings.SECRET_KEY, algorithms=["HS256"])
@@ -70,8 +76,8 @@ def accept_location_share(request, data: AcceptInput):
   if req is None:
     return HttpError(400, "Invalid invite code")
 
-  f1 = Follow(owner=req.owner, following=request.user, pubkey=req.pubkey)
-  f2 = Follow(owner=request.user, following=req.owner, pubkey=data.pubkey)
+  f1 = Follow(owner=req.owner, following=request.user, follow_pubkey=data.pubkey)
+  f2 = Follow(owner=request.user, following=req.owner, follow_pubkey=req.pubkey)
   f1.save()
   f2.save()
 
@@ -79,11 +85,7 @@ def accept_location_share(request, data: AcceptInput):
   req.used_on = timezone.now()
   req.save()
 
-  return {
-    "name": req.owner.get_full_name() or req.owner.email,
-    "email": req.owner.email,
-    "pubkey": req.pubkey,
-  }
+  return f2
 
 
 class AuthSchema(Schema):
@@ -94,3 +96,9 @@ class AuthSchema(Schema):
 @router.get("/auth/check", response=AuthSchema)
 def auth_check(request):
   return {"id": request.user.id, "expires": request.session.get_expiry_date().isoformat()}
+
+
+@router.get("/follow/list", response=List[FollowSchema])
+@paginate
+def follow_list(request):
+  return Follow.objects.filter(owner=request.user)
