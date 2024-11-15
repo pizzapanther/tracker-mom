@@ -146,10 +146,13 @@ LOGIN_REDIRECT_URL = "/"
 
 ALLAUTH_UI_THEME = "emerald"
 
-# in Minutes
-FOLLOW_REQUEST_EXPIRATION = 60 * 24 * 3
+# in Minutes - Default 3 days
+FOLLOW_REQUEST_EXPIRATION = int(os.environ.get('FOLLOW_REQUEST_EXPIRATION', '4320'))
 
 APP_BASE_URL = "https://app.tracker.mom"
+
+# in Minutes - Default 1 hr
+EXCHANGE_EXPIRATION = int(os.environ.get('EXCHANGE_EXPIRATION', '3600'))
 
 REDIS_URL = os.environ.get("REDIS_URL", "redis://127.0.0.1:6379")
 CACHES = {

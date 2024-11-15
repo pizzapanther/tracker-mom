@@ -42,7 +42,7 @@ def request_location_share(request, data: FollowInput):
 
   payload = {
     "invite-code": code,
-    "exp": timezone.now() + datetime.timedelta(days=3),
+    "exp": timezone.now() + datetime.timedelta(minutes=settings.FOLLOW_REQUEST_EXPIRATION),
   }
   encoded = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
   return {"status": "OK", "url": f"{settings.APP_BASE_URL}/account/accept-invite/{encoded}"}
