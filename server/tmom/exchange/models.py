@@ -12,8 +12,12 @@ register(EmailAddress)
 
 
 class Follow(models.Model):
-  owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="follows")
-  following = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="followers")
+  owner = models.ForeignKey(
+    settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="follows"
+  )
+  following = models.ForeignKey(
+    settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="followers"
+  )
 
   pubkey = models.TextField()
 
@@ -37,7 +41,13 @@ class FollowRequest(models.Model):
   pubkey = models.TextField()
 
   used_on = models.DateTimeField(blank=True, null=True)
-  used_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="accepted_requests", blank=True, null=True)
+  used_by = models.ForeignKey(
+    settings.AUTH_USER_MODEL,
+    on_delete=models.CASCADE,
+    related_name="accepted_requests",
+    blank=True,
+    null=True,
+  )
 
   created = models.DateTimeField(db_default=Now())
 

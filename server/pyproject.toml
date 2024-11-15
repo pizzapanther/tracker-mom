@@ -36,3 +36,4 @@ dev = ["pytest-django>=4.9.0"]
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "tmom.settings.test"
 python_files = ["tests.py", "test_*.py", "*_test.py", "testing/python/*.py"]
+addopts = "-p no:warnings"

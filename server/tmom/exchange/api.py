@@ -23,7 +23,7 @@ class FollowInput(Schema):
   pubkey: str
 
 
-@router.post('/follow/request', response=InviteSchema)
+@router.post("/follow/request", response=InviteSchema)
 def request_location_share(request, data: FollowInput):
   rw = RandomWord()
   while 1:
@@ -43,7 +43,7 @@ def request_location_share(request, data: FollowInput):
     "exp": timezone.now() + datetime.timedelta(days=3),
   }
   encoded = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
-  return {'status': 'OK', 'url': f'{settings.APP_BASE_URL}/account/accept-invite/{encoded}'}
+  return {"status": "OK", "url": f"{settings.APP_BASE_URL}/account/accept-invite/{encoded}"}
 
 
 class ShareSchema(Schema):
@@ -57,7 +57,7 @@ class AcceptInput(Schema):
   pubkey: str
 
 
-@router.post('/follow/accept', response=ShareSchema)
+@router.post("/follow/accept", response=ShareSchema)
 def accept_location_share(request, data: AcceptInput):
   try:
     payload = jwt.decode(data.token, settings.SECRET_KEY, algorithms=["HS256"])
@@ -66,7 +66,7 @@ def accept_location_share(request, data: AcceptInput):
   except:
     return HttpError(400, "Invalid token")
 
-  req = FollowRequest.objects.filter(code=payload['invite-code']).first()
+  req = FollowRequest.objects.filter(code=payload["invite-code"]).first()
   if req is None:
     return HttpError(400, "Invalid invite code")
 
@@ -79,7 +79,11 @@ def accept_location_share(request, data: AcceptInput):
   req.used_on = timezone.now()
   req.save()
 
-  return {'name': req.user.get_full_name() or req.user.email, 'email': req.user.email, 'pubkey': req.pubkey}
+  return {
+    "name": req.owner.get_full_name() or req.owner.email,
+    "email": req.owner.email,
+    "pubkey": req.pubkey,
+  }
 
 
 class AuthSchema(Schema):
@@ -87,6 +91,6 @@ class AuthSchema(Schema):
   expires: str
 
 
-@router.get('/auth/check', response=AuthSchema)
+@router.get("/auth/check", response=AuthSchema)
 def auth_check(request):
-  return {'id': request.user.id, 'expires': request.session.get_expiry_date().isoformat()}
+  return {"id": request.user.id, "expires": request.session.get_expiry_date().isoformat()}

@@ -6,16 +6,21 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ("exchange", "0002_followrequest_historicalfollowrequest"),
+    migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+  ]
 
-    dependencies = [
-        ('exchange', '0002_followrequest_historicalfollowrequest'),
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-    ]
-
-    operations = [
-        migrations.AlterField(
-            model_name='followrequest',
-            name='used_by',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='accepted_requests', to=settings.AUTH_USER_MODEL),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name="followrequest",
+      name="used_by",
+      field=models.ForeignKey(
+        blank=True,
+        null=True,
+        on_delete=django.db.models.deletion.CASCADE,
+        related_name="accepted_requests",
+        to=settings.AUTH_USER_MODEL,
+      ),
+    ),
+  ]

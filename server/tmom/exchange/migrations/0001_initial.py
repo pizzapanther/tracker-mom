@@ -8,51 +8,105 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  initial = True
 
-    initial = True
+  dependencies = [
+    migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+  ]
 
-    dependencies = [
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-    ]
-
-    operations = [
-        migrations.CreateModel(
-            name='Follow',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('pubkey', models.TextField()),
-                ('active', models.BooleanField(default=True)),
-                ('approved', models.BooleanField(default=False)),
-                ('created', models.DateTimeField(db_default=django.db.models.functions.datetime.Now())),
-                ('following', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='followers', to=settings.AUTH_USER_MODEL)),
-                ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='follows', to=settings.AUTH_USER_MODEL)),
-            ],
-            options={
-                'ordering': ['-created'],
-            },
+  operations = [
+    migrations.CreateModel(
+      name="Follow",
+      fields=[
+        (
+          "id",
+          models.BigAutoField(
+            auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+          ),
         ),
-        migrations.CreateModel(
-            name='HistoricalFollow',
-            fields=[
-                ('id', models.BigIntegerField(auto_created=True, blank=True, db_index=True, verbose_name='ID')),
-                ('pubkey', models.TextField()),
-                ('active', models.BooleanField(default=True)),
-                ('approved', models.BooleanField(default=False)),
-                ('created', models.DateTimeField(db_default=django.db.models.functions.datetime.Now())),
-                ('history_id', models.AutoField(primary_key=True, serialize=False)),
-                ('history_date', models.DateTimeField(db_index=True)),
-                ('history_change_reason', models.CharField(max_length=100, null=True)),
-                ('history_type', models.CharField(choices=[('+', 'Created'), ('~', 'Changed'), ('-', 'Deleted')], max_length=1)),
-                ('following', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('history_user', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to=settings.AUTH_USER_MODEL)),
-                ('owner', models.ForeignKey(blank=True, db_constraint=False, null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='+', to=settings.AUTH_USER_MODEL)),
-            ],
-            options={
-                'verbose_name': 'historical follow',
-                'verbose_name_plural': 'historical follows',
-                'ordering': ('-history_date', '-history_id'),
-                'get_latest_by': ('history_date', 'history_id'),
-            },
-            bases=(simple_history.models.HistoricalChanges, models.Model),
+        ("pubkey", models.TextField()),
+        ("active", models.BooleanField(default=True)),
+        ("approved", models.BooleanField(default=False)),
+        ("created", models.DateTimeField(db_default=django.db.models.functions.datetime.Now())),
+        (
+          "following",
+          models.ForeignKey(
+            on_delete=django.db.models.deletion.CASCADE,
+            related_name="followers",
+            to=settings.AUTH_USER_MODEL,
+          ),
         ),
-    ]
+        (
+          "owner",
+          models.ForeignKey(
+            on_delete=django.db.models.deletion.CASCADE,
+            related_name="follows",
+            to=settings.AUTH_USER_MODEL,
+          ),
+        ),
+      ],
+      options={
+        "ordering": ["-created"],
+      },
+    ),
+    migrations.CreateModel(
+      name="HistoricalFollow",
+      fields=[
+        (
+          "id",
+          models.BigIntegerField(auto_created=True, blank=True, db_index=True, verbose_name="ID"),
+        ),
+        ("pubkey", models.TextField()),
+        ("active", models.BooleanField(default=True)),
+        ("approved", models.BooleanField(default=False)),
+        ("created", models.DateTimeField(db_default=django.db.models.functions.datetime.Now())),
+        ("history_id", models.AutoField(primary_key=True, serialize=False)),
+        ("history_date", models.DateTimeField(db_index=True)),
+        ("history_change_reason", models.CharField(max_length=100, null=True)),
+        (
+          "history_type",
+          models.CharField(
+            choices=[("+", "Created"), ("~", "Changed"), ("-", "Deleted")], max_length=1
+          ),
+        ),
+        (
+          "following",
+          models.ForeignKey(
+            blank=True,
+            db_constraint=False,
+            null=True,
+            on_delete=django.db.models.deletion.DO_NOTHING,
+            related_name="+",
+            to=settings.AUTH_USER_MODEL,
+          ),
+        ),
+        (
+          "history_user",
+          models.ForeignKey(
+            null=True,
+            on_delete=django.db.models.deletion.SET_NULL,
+            related_name="+",
+            to=settings.AUTH_USER_MODEL,
+          ),
+        ),
+        (
+          "owner",
+          models.ForeignKey(
+            blank=True,
+            db_constraint=False,
+            null=True,
+            on_delete=django.db.models.deletion.DO_NOTHING,
+            related_name="+",
+            to=settings.AUTH_USER_MODEL,
+          ),
+        ),
+      ],
+      options={
+        "verbose_name": "historical follow",
+        "verbose_name_plural": "historical follows",
+        "ordering": ("-history_date", "-history_id"),
+        "get_latest_by": ("history_date", "history_id"),
+      },
+      bases=(simple_history.models.HistoricalChanges, models.Model),
+    ),
+  ]

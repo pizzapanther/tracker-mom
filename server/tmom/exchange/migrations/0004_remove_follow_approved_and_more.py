@@ -4,18 +4,17 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ("exchange", "0003_alter_followrequest_used_by"),
+  ]
 
-    dependencies = [
-        ('exchange', '0003_alter_followrequest_used_by'),
-    ]
-
-    operations = [
-        migrations.RemoveField(
-            model_name='follow',
-            name='approved',
-        ),
-        migrations.RemoveField(
-            model_name='historicalfollow',
-            name='approved',
-        ),
-    ]
+  operations = [
+    migrations.RemoveField(
+      model_name="follow",
+      name="approved",
+    ),
+    migrations.RemoveField(
+      model_name="historicalfollow",
+      name="approved",
+    ),
+  ]
