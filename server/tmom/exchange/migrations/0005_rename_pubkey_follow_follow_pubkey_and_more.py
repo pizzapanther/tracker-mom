@@ -4,20 +4,19 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ("exchange", "0004_remove_follow_approved_and_more"),
+  ]
 
-    dependencies = [
-        ('exchange', '0004_remove_follow_approved_and_more'),
-    ]
-
-    operations = [
-        migrations.RenameField(
-            model_name='follow',
-            old_name='pubkey',
-            new_name='follow_pubkey',
-        ),
-        migrations.RenameField(
-            model_name='historicalfollow',
-            old_name='pubkey',
-            new_name='follow_pubkey',
-        ),
-    ]
+  operations = [
+    migrations.RenameField(
+      model_name="follow",
+      old_name="pubkey",
+      new_name="follow_pubkey",
+    ),
+    migrations.RenameField(
+      model_name="historicalfollow",
+      old_name="pubkey",
+      new_name="follow_pubkey",
+    ),
+  ]

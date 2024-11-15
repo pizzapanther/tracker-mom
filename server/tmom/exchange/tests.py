@@ -38,11 +38,11 @@ def test_invite_flow(api_client, django_user_model):
 
   response = api_client.get(f"{BASE_URL}/follow/list")
   data = response.json()
-  assert data['count'] == 1
-  assert data['items'][0]['email'] == 'user1@aol.com'
+  assert data["count"] == 1
+  assert data["items"][0]["email"] == "user1@aol.com"
 
   api_client.force_login(user1)
   response = api_client.get(f"{BASE_URL}/follow/list")
   data = response.json()
-  assert data['count'] == 1
-  assert data['items'][0]['email'] == 'user2@aol.com'
+  assert data["count"] == 1
+  assert data["items"][0]["email"] == "user2@aol.com"

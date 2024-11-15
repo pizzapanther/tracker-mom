@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -149,3 +150,11 @@ ALLAUTH_UI_THEME = "emerald"
 FOLLOW_REQUEST_EXPIRATION = 60 * 24 * 3
 
 APP_BASE_URL = "https://app.tracker.mom"
+
+REDIS_URL = os.environ.get("REDIS_URL", "redis://127.0.0.1:6379")
+CACHES = {
+  "default": {
+    "BACKEND": "django.core.cache.backends.redis.RedisCache",
+    "LOCATION": REDIS_URL,
+  }
+}
