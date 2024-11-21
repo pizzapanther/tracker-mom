@@ -39,7 +39,6 @@ INSTALLED_APPS = [
   "allauth.account",
   "widget_tweaks",
   "slippers",
-  "simple_history",
   "ninja",
   "tmom.exchange",
 ]
@@ -53,7 +52,6 @@ MIDDLEWARE = [
   "django.contrib.messages.middleware.MessageMiddleware",
   "django.middleware.clickjacking.XFrameOptionsMiddleware",
   "allauth.account.middleware.AccountMiddleware",
-  "simple_history.middleware.HistoryRequestMiddleware",
 ]
 
 ROOT_URLCONF = "tmom.urls"

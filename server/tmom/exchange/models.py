@@ -1,17 +1,9 @@
 import datetime
 
 from django.conf import settings
-from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.functions import Now
 from django.utils import timezone
-
-from allauth.account.models import EmailAddress
-from simple_history import register
-from simple_history.models import HistoricalRecords
-
-register(User)
-register(EmailAddress)
 
 
 class Follow(models.Model):
@@ -25,10 +17,9 @@ class Follow(models.Model):
   follow_pubkey = models.TextField()
 
   active = models.BooleanField(default=True)
+  active_off_on = models.DateTimeField(blank=True, null=True)
 
   created = models.DateTimeField(db_default=Now())
-
-  history = HistoricalRecords()
 
   class Meta:
     ordering = ["-created"]
@@ -65,8 +56,6 @@ class FollowRequest(models.Model):
   )
 
   created = models.DateTimeField(db_default=Now())
-
-  history = HistoricalRecords()
 
   class Meta:
     ordering = ["-created"]

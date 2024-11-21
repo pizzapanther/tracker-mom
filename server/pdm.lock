@@ -5,7 +5,7 @@
 groups = ["default", "dev"]
 strategy = []
 lock_version = "4.5.0"
-content_hash = "sha256:8de5d949504577195085d082a93361e0a1b3884add953971de5e1e320d6200c2"
+content_hash = "sha256:fbb1fcf1c12cc2a3c04038e20b4bf6e57c65a51c42b0cdaef40e264eb48e02d1"
 
 [[metadata.targets]]
 requires_python = "==3.11.*"
@@ -110,19 +110,6 @@ dependencies = [
 files = [
     {file = "django_ninja-1.3.0-py3-none-any.whl", hash = "sha256:f58096b6c767d1403dfd6c49743f82d780d7b9688d9302ecab316ac1fa6131bb"},
     {file = "django_ninja-1.3.0.tar.gz", hash = "sha256:5b320e2dc0f41a6032bfa7e1ebc33559ae1e911a426f0c6be6674a50b20819be"},
-]
-
-[[package]]
-name = "django-simple-history"
-version = "3.7.0"
-requires_python = ">=3.8"
-summary = "Store model history and view/revert changes from admin site."
-dependencies = [
-    "django>=4.2",
-]
-files = [
-    {file = "django_simple_history-3.7.0-py3-none-any.whl", hash = "sha256:282cb2c4aa63f51547f17da7f2130abaa81ba01694676d19b88d52c94a57a52c"},
-    {file = "django_simple_history-3.7.0.tar.gz", hash = "sha256:ac3b7ca8b0d33f7ea6be8fe7fc98cf43415efa500ff5dfe736fbd1ebc0cf39f9"},
 ]
 
 [[package]]

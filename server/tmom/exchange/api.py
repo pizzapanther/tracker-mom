@@ -11,7 +11,7 @@ from wonderwords import RandomWord
 from django.conf import settings
 from django.utils import timezone
 
-from tmom.exchange.models import FollowRequest, Follow
+from tmom.exchange.models import FollowRequest, Follow, LocationShare
 
 router = Router()
 
@@ -76,13 +76,17 @@ def accept_location_share(request, data: AcceptInput):
   if req is None:
     return HttpError(400, "Invalid invite code")
 
+  now = timezone.now()
+  Follow.objects.filter(owner=req.owner, following=request.user).update(active=False, active_off_on=now)
+  Follow.objects.filter(owner=request.user, following=req.owner).update(active=False, active_off_on=now)
+
   f1 = Follow(owner=req.owner, following=request.user, follow_pubkey=data.pubkey)
   f2 = Follow(owner=request.user, following=req.owner, follow_pubkey=req.pubkey)
   f1.save()
   f2.save()
 
   req.used_by = request.user
-  req.used_on = timezone.now()
+  req.used_on = now
   req.save()
 
   return f2
@@ -102,3 +106,27 @@ def auth_check(request):
 @paginate
 def follow_list(request):
   return Follow.objects.filter(owner=request.user).order_by("-created")
+
+
+class LocationShareInput(Schema):
+  follow_id: int
+  payload: str
+
+
+class SavedStatusSchema(Schema):
+  status: str
+  saved: int
+
+
+@router.post("/location/push", response=SavedStatusSchema)
+def location_push(request, data: List[LocationShareInput]):
+  cnt = 0
+  for d in data:
+    follow = Follow.objects.filter(owner=request.user, id=d.follow_id, active=True).first()
+
+    if follow:
+      share = LocationShare(follow=follow, payload=d.payload)
+      share.save()
+      cnt += 1
+
+  return {'status': 'OK', 'saved': cnt}
