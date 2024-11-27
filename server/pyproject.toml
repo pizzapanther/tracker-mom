@@ -19,6 +19,10 @@ readme = "README.md"
 license = {text = "AGPL-3.0"}
 
 
+[tool.ruff]
+line-length = 100
+indent-width = 2
+
 [tool.pdm]
 distribution = false
 
@@ -26,12 +30,11 @@ distribution = false
 dev = "python manage.py runserver 0.0.0.0:8000"
 test = "pytest -sx"
 
-[tool.ruff]
-line-length = 100
-indent-width = 2
-
 [dependency-groups]
-dev = ["pytest-django>=4.9.0"]
+dev = [
+    "pytest-django>=4.9.0",
+    "pynacl>=1.5.0",
+]
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "tmom.settings.test"
