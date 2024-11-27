@@ -130,3 +130,17 @@ def location_push(request, data: List[LocationShareInput]):
       cnt += 1
 
   return {'status': 'OK', 'saved': cnt}
+
+
+class LocationShareSchema(ModelSchema):
+  class Meta:
+    model = LocationShare
+    fields = ["id", "payload", "follow"]
+
+
+@router.get("/location/list", response=List[LocationShareSchema])
+@paginate
+def location_list(request):
+  qs = LocationShare.objects.filter(follow__owner=request.user)
+  LocationShare.cleanup(qs)
+  return qs

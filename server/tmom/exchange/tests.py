@@ -93,3 +93,15 @@ def test_send_messages(api_client, django_user_model):
   }]
   response = api_client.json_post(f"{BASE_URL}/location/push", data)
   assert response.status_code == 200
+
+  api_client.force_login(user1)
+  response = api_client.get(f"{BASE_URL}/location/list")
+  data = response.json()
+
+  print(data)
+
+  api_client.force_login(user2)
+  response = api_client.get(f"{BASE_URL}/location/list")
+  data = response.json()
+
+  print(data)

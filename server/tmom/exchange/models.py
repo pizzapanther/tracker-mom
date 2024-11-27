@@ -77,6 +77,9 @@ class LocationShare(models.Model):
     return f"{self.follow}"
 
   @classmethod
-  def cleanup(cls):
+  def cleanup(cls, qs=None):
     old = timezone.now() - datetime.timedelta(minutes=settings.EXCHANGE_EXPIRATION)
-    cls.filter(created__lte=old).delete()
+    if qs is None:
+      qs = cls.objects.all()
+
+    return qs.filter(created__lte=old).delete()
