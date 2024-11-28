@@ -27,18 +27,6 @@ class Follow(models.Model):
   def __str__(self):
     return f"{self.owner} -> {self.following}"
 
-  @property
-  def name(self):
-    return self.following.get_full_name() or self.following.email
-
-  @property
-  def email(self):
-    return self.following.email
-
-  @property
-  def pubkey(self):
-    return self.follow_pubkey
-
 
 class FollowRequest(models.Model):
   owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -86,8 +74,4 @@ class LocationShare(models.Model):
 
   @property
   def posted_by(self):
-    return {
-      'name': self.follow.owner.get_full_name() or self.follow.owner.email,
-      'email': self.follow.owner.email,
-      'id': self.follow.owner.id,
-    }
+    return self.follow.owner

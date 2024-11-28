@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  dependencies = [
+    ("exchange", "0001_initial"),
+  ]
 
-    dependencies = [
-        ('exchange', '0001_initial'),
-    ]
-
-    operations = [
-        migrations.AddField(
-            model_name='follow',
-            name='active_off_on',
-            field=models.DateTimeField(blank=True, null=True),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name="follow",
+      name="active_off_on",
+      field=models.DateTimeField(blank=True, null=True),
+    ),
+  ]

@@ -2,7 +2,6 @@ import pytest
 
 from tmom.exchange.models import FollowRequest, Follow
 
-import nacl.utils
 from nacl.public import PrivateKey, Box
 from nacl.encoding import URLSafeBase64Encoder
 
@@ -34,7 +33,7 @@ def test_invite_flow(api_client, django_user_model):
   response = api_client.json_post(f"{BASE_URL}/follow/accept", idata)
   assert response.status_code == 200
   data = response.json()
-  assert data["pubkey"]
+  assert data["follow_pubkey"]
 
   req = FollowRequest.objects.get(owner=user1)
   assert req.used_on
@@ -43,13 +42,13 @@ def test_invite_flow(api_client, django_user_model):
   response = api_client.get(f"{BASE_URL}/follow/list")
   data = response.json()
   assert data["count"] == 1
-  assert data["items"][0]["email"] == "user1@aol.com"
+  assert data["items"][0]["following"]["email"] == "user1@aol.com"
 
   api_client.force_login(user1)
   response = api_client.get(f"{BASE_URL}/follow/list")
   data = response.json()
   assert data["count"] == 1
-  assert data["items"][0]["email"] == "user2@aol.com"
+  assert data["items"][0]["following"]["email"] == "user2@aol.com"
 
 
 @pytest.mark.django_db
@@ -73,24 +72,28 @@ def test_send_messages(api_client, django_user_model):
   f2.save()
 
   box1 = Box(pkey1, pkey2.public_key)
-  etext1 = box1.encrypt(b'narf', encoder=URLSafeBase64Encoder).decode()
+  etext1 = box1.encrypt(b"narf", encoder=URLSafeBase64Encoder).decode()
 
   box2 = Box(pkey2, pkey1.public_key)
-  etext2 = box2.encrypt(b'barf', encoder=URLSafeBase64Encoder).decode()
+  etext2 = box2.encrypt(b"barf", encoder=URLSafeBase64Encoder).decode()
 
   api_client.force_login(user1)
-  data = [{
-    "following": f2.id,
-    "payload": etext1,
-  }]
+  data = [
+    {
+      "following": f2.id,
+      "payload": etext1,
+    }
+  ]
   response = api_client.json_post(f"{BASE_URL}/location/push", data)
   assert response.status_code == 200
 
   api_client.force_login(user2)
-  data = [{
-    "following": f1.id,
-    "payload": etext2,
-  }]
+  data = [
+    {
+      "following": f1.id,
+      "payload": etext2,
+    }
+  ]
   response = api_client.json_post(f"{BASE_URL}/location/push", data)
   assert response.status_code == 200
 
@@ -98,16 +101,16 @@ def test_send_messages(api_client, django_user_model):
   response = api_client.get(f"{BASE_URL}/location/list")
   data = response.json()
 
-  assert len(data['items']) == 1
-  msg = box1.decrypt(data['items'][0]['payload'], encoder=URLSafeBase64Encoder)
-  assert msg.decode() == 'barf'
-  assert data['items'][0]['posted_by']['id'] == 2
+  assert len(data["items"]) == 1
+  msg = box1.decrypt(data["items"][0]["payload"], encoder=URLSafeBase64Encoder)
+  assert msg.decode() == "barf"
+  assert data["items"][0]["posted_by"]["id"] == 2
 
   api_client.force_login(user2)
   response = api_client.get(f"{BASE_URL}/location/list")
   data = response.json()
 
-  assert len(data['items']) == 1
-  msg = box2.decrypt(data['items'][0]['payload'], encoder=URLSafeBase64Encoder)
-  assert msg.decode() == 'narf'
-  assert data['items'][0]['posted_by']['id'] == 1
+  assert len(data["items"]) == 1
+  msg = box2.decrypt(data["items"][0]["payload"], encoder=URLSafeBase64Encoder)
+  assert msg.decode() == "narf"
+  assert data["items"][0]["posted_by"]["id"] == 1

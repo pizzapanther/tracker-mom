@@ -7,53 +7,98 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+  initial = True
 
-    initial = True
+  dependencies = [
+    migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+  ]
 
-    dependencies = [
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-    ]
-
-    operations = [
-        migrations.CreateModel(
-            name='Follow',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('follow_pubkey', models.TextField()),
-                ('active', models.BooleanField(default=True)),
-                ('created', models.DateTimeField(db_default=django.db.models.functions.datetime.Now())),
-                ('following', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='followers', to=settings.AUTH_USER_MODEL)),
-                ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='follows', to=settings.AUTH_USER_MODEL)),
-            ],
-            options={
-                'ordering': ['-created'],
-            },
+  operations = [
+    migrations.CreateModel(
+      name="Follow",
+      fields=[
+        (
+          "id",
+          models.BigAutoField(
+            auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+          ),
         ),
-        migrations.CreateModel(
-            name='FollowRequest',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('code', models.CharField(max_length=15)),
-                ('pubkey', models.TextField()),
-                ('used_on', models.DateTimeField(blank=True, null=True)),
-                ('created', models.DateTimeField(db_default=django.db.models.functions.datetime.Now())),
-                ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-                ('used_by', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='accepted_requests', to=settings.AUTH_USER_MODEL)),
-            ],
-            options={
-                'ordering': ['-created'],
-            },
+        ("follow_pubkey", models.TextField()),
+        ("active", models.BooleanField(default=True)),
+        ("created", models.DateTimeField(db_default=django.db.models.functions.datetime.Now())),
+        (
+          "following",
+          models.ForeignKey(
+            on_delete=django.db.models.deletion.CASCADE,
+            related_name="followers",
+            to=settings.AUTH_USER_MODEL,
+          ),
         ),
-        migrations.CreateModel(
-            name='LocationShare',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('payload', models.TextField()),
-                ('created', models.DateTimeField(db_default=django.db.models.functions.datetime.Now())),
-                ('follow', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='exchange.follow')),
-            ],
-            options={
-                'ordering': ['created'],
-            },
+        (
+          "owner",
+          models.ForeignKey(
+            on_delete=django.db.models.deletion.CASCADE,
+            related_name="follows",
+            to=settings.AUTH_USER_MODEL,
+          ),
         ),
-    ]
+      ],
+      options={
+        "ordering": ["-created"],
+      },
+    ),
+    migrations.CreateModel(
+      name="FollowRequest",
+      fields=[
+        (
+          "id",
+          models.BigAutoField(
+            auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+          ),
+        ),
+        ("code", models.CharField(max_length=15)),
+        ("pubkey", models.TextField()),
+        ("used_on", models.DateTimeField(blank=True, null=True)),
+        ("created", models.DateTimeField(db_default=django.db.models.functions.datetime.Now())),
+        (
+          "owner",
+          models.ForeignKey(
+            on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL
+          ),
+        ),
+        (
+          "used_by",
+          models.ForeignKey(
+            blank=True,
+            null=True,
+            on_delete=django.db.models.deletion.CASCADE,
+            related_name="accepted_requests",
+            to=settings.AUTH_USER_MODEL,
+          ),
+        ),
+      ],
+      options={
+        "ordering": ["-created"],
+      },
+    ),
+    migrations.CreateModel(
+      name="LocationShare",
+      fields=[
+        (
+          "id",
+          models.BigAutoField(
+            auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+          ),
+        ),
+        ("payload", models.TextField()),
+        ("created", models.DateTimeField(db_default=django.db.models.functions.datetime.Now())),
+        (
+          "follow",
+          models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="exchange.follow"),
+        ),
+      ],
+      options={
+        "ordering": ["created"],
+      },
+    ),
+  ]

@@ -3,7 +3,7 @@ import random
 from typing import List
 
 import jwt
-from ninja import Router, Schema, ModelSchema
+from ninja import Router
 from ninja.errors import HttpError
 from ninja.pagination import paginate
 from wonderwords import RandomWord
@@ -12,17 +12,18 @@ from django.conf import settings
 from django.utils import timezone
 
 from tmom.exchange.models import FollowRequest, Follow, LocationShare
+from tmom.exchange.schema import (
+  InviteSchema,
+  FollowInput,
+  FollowSchema,
+  AcceptInput,
+  AuthSchema,
+  LocationShareInput,
+  SavedStatusSchema,
+  LocationShareSchema,
+)
 
 router = Router()
-
-
-class InviteSchema(Schema):
-  status: str
-  url: str
-
-
-class FollowInput(Schema):
-  pubkey: str
 
 
 @router.post("/follow/request", response=InviteSchema)
@@ -48,21 +49,6 @@ def request_location_share(request, data: FollowInput):
   return {"status": "OK", "url": f"{settings.APP_BASE_URL}/account/accept-invite/{encoded}"}
 
 
-class FollowSchema(ModelSchema):
-  email: str
-  pubkey: str
-  name: str
-
-  class Meta:
-    model = Follow
-    fields = ["following", "created"]
-
-
-class AcceptInput(Schema):
-  token: str
-  pubkey: str
-
-
 @router.post("/follow/accept", response=FollowSchema)
 def accept_location_share(request, data: AcceptInput):
   try:
@@ -77,8 +63,12 @@ def accept_location_share(request, data: AcceptInput):
     return HttpError(400, "Invalid invite code")
 
   now = timezone.now()
-  Follow.objects.filter(owner=req.owner, following=request.user).update(active=False, active_off_on=now)
-  Follow.objects.filter(owner=request.user, following=req.owner).update(active=False, active_off_on=now)
+  Follow.objects.filter(owner=req.owner, following=request.user).update(
+    active=False, active_off_on=now
+  )
+  Follow.objects.filter(owner=request.user, following=req.owner).update(
+    active=False, active_off_on=now
+  )
 
   f1 = Follow(owner=req.owner, following=request.user, follow_pubkey=data.pubkey)
   f2 = Follow(owner=request.user, following=req.owner, follow_pubkey=req.pubkey)
@@ -92,11 +82,6 @@ def accept_location_share(request, data: AcceptInput):
   return f2
 
 
-class AuthSchema(Schema):
-  id: int
-  expires: str
-
-
 @router.get("/auth/check", response=AuthSchema)
 def auth_check(request):
   return {"id": request.user.id, "expires": request.session.get_expiry_date().isoformat()}
@@ -106,16 +91,6 @@ def auth_check(request):
 @paginate
 def follow_list(request):
   return Follow.objects.filter(owner=request.user).order_by("-created")
-
-
-class LocationShareInput(Schema):
-  following: int
-  payload: str
-
-
-class SavedStatusSchema(Schema):
-  status: str
-  saved: int
 
 
 @router.post("/location/push", response=SavedStatusSchema)
@@ -129,15 +104,7 @@ def location_push(request, data: List[LocationShareInput]):
       share.save()
       cnt += 1
 
-  return {'status': 'OK', 'saved': cnt}
-
-
-class LocationShareSchema(ModelSchema):
-  posted_by: dict
-
-  class Meta:
-    model = LocationShare
-    fields = ["id", "payload", "created"]
+  return {"status": "OK", "saved": cnt}
 
 
 @router.get("/location/list", response=List[LocationShareSchema])
