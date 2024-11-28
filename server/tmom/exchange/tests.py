@@ -101,6 +101,7 @@ def test_send_messages(api_client, django_user_model):
   assert len(data['items']) == 1
   msg = box1.decrypt(data['items'][0]['payload'], encoder=URLSafeBase64Encoder)
   assert msg.decode() == 'barf'
+  assert data['items'][0]['posted_by']['id'] == 2
 
   api_client.force_login(user2)
   response = api_client.get(f"{BASE_URL}/location/list")
@@ -109,3 +110,4 @@ def test_send_messages(api_client, django_user_model):
   assert len(data['items']) == 1
   msg = box2.decrypt(data['items'][0]['payload'], encoder=URLSafeBase64Encoder)
   assert msg.decode() == 'narf'
+  assert data['items'][0]['posted_by']['id'] == 1

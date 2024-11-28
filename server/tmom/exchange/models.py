@@ -83,3 +83,11 @@ class LocationShare(models.Model):
       qs = cls.objects.all()
 
     return qs.filter(created__lte=old).delete()
+
+  @property
+  def posted_by(self):
+    return {
+      'name': self.follow.owner.get_full_name() or self.follow.owner.email,
+      'email': self.follow.owner.email,
+      'id': self.follow.owner.id,
+    }

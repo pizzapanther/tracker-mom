@@ -55,7 +55,7 @@ class FollowSchema(ModelSchema):
 
   class Meta:
     model = Follow
-    fields = ["following"]
+    fields = ["following", "created"]
 
 
 class AcceptInput(Schema):
@@ -133,9 +133,11 @@ def location_push(request, data: List[LocationShareInput]):
 
 
 class LocationShareSchema(ModelSchema):
+  posted_by: dict
+
   class Meta:
     model = LocationShare
-    fields = ["id", "payload", "follow", "created"]
+    fields = ["id", "payload", "created"]
 
 
 @router.get("/location/list", response=List[LocationShareSchema])
