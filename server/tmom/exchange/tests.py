@@ -80,7 +80,7 @@ def test_send_messages(api_client, django_user_model):
 
   api_client.force_login(user1)
   data = [{
-    "follow_id": f1.id,
+    "following": f2.id,
     "payload": etext1,
   }]
   response = api_client.json_post(f"{BASE_URL}/location/push", data)
@@ -88,7 +88,7 @@ def test_send_messages(api_client, django_user_model):
 
   api_client.force_login(user2)
   data = [{
-    "follow_id": f2.id,
+    "following": f1.id,
     "payload": etext2,
   }]
   response = api_client.json_post(f"{BASE_URL}/location/push", data)
@@ -98,10 +98,14 @@ def test_send_messages(api_client, django_user_model):
   response = api_client.get(f"{BASE_URL}/location/list")
   data = response.json()
 
-  print(data)
+  assert len(data['items']) == 1
+  msg = box1.decrypt(data['items'][0]['payload'], encoder=URLSafeBase64Encoder)
+  assert msg.decode() == 'barf'
 
   api_client.force_login(user2)
   response = api_client.get(f"{BASE_URL}/location/list")
   data = response.json()
 
-  print(data)
+  assert len(data['items']) == 1
+  msg = box2.decrypt(data['items'][0]['payload'], encoder=URLSafeBase64Encoder)
+  assert msg.decode() == 'narf'

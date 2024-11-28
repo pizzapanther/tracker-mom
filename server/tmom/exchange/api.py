@@ -55,7 +55,7 @@ class FollowSchema(ModelSchema):
 
   class Meta:
     model = Follow
-    fields = ["id"]
+    fields = ["following"]
 
 
 class AcceptInput(Schema):
@@ -109,7 +109,7 @@ def follow_list(request):
 
 
 class LocationShareInput(Schema):
-  follow_id: int
+  following: int
   payload: str
 
 
@@ -122,7 +122,7 @@ class SavedStatusSchema(Schema):
 def location_push(request, data: List[LocationShareInput]):
   cnt = 0
   for d in data:
-    follow = Follow.objects.filter(owner=request.user, id=d.follow_id, active=True).first()
+    follow = Follow.objects.filter(owner=request.user, following=d.following, active=True).first()
 
     if follow:
       share = LocationShare(follow=follow, payload=d.payload)
@@ -135,12 +135,12 @@ def location_push(request, data: List[LocationShareInput]):
 class LocationShareSchema(ModelSchema):
   class Meta:
     model = LocationShare
-    fields = ["id", "payload", "follow"]
+    fields = ["id", "payload", "follow", "created"]
 
 
 @router.get("/location/list", response=List[LocationShareSchema])
 @paginate
 def location_list(request):
-  qs = LocationShare.objects.filter(follow__owner=request.user)
+  qs = LocationShare.objects.filter(follow__following=request.user)
   LocationShare.cleanup(qs)
   return qs
