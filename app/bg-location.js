@@ -43,10 +43,11 @@ export function start_bg_watcher() {
     distanceFilter: 50,
   };
 
-  BackgroundGeolocation.addWatcher(options, watcher_callback)
-    .then((watcher_id) => {
+  BackgroundGeolocation.addWatcher(options, watcher_callback).then(
+    (watcher_id) => {
       console.log("Watcher Added:", watcher_id);
-    });
+    },
+  );
 }
 
 export default start_bg_watcher;

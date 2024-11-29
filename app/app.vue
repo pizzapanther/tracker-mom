@@ -1,30 +1,31 @@
 <template>
-    <q-layout view="hHh lpR fFf">
-        <q-page-container>
-            <h1>NARF 2</h1>
-        </q-page-container>
+  <q-layout view="hHh lpR fFf">
+    <q-page-container>
+      <login-view></login-view>
+    </q-page-container>
 
-        <q-footer elevated class="bg-grey-8 text-white">
-            <q-toolbar>
-                <q-toolbar-title>
-                    <q-avatar>
-                        <img
-                            src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg"
-                        />
-                    </q-avatar>
-                    <div>Title</div>
-                </q-toolbar-title>
-            </q-toolbar>
-        </q-footer>
-    </q-layout>
+    <q-footer elevated class="bg-grey-8 text-white">
+      <q-toolbar>
+        <q-toolbar-title>
+          <q-avatar>
+            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
+          </q-avatar>
+          <div>Title</div>
+        </q-toolbar-title>
+      </q-toolbar>
+    </q-footer>
+  </q-layout>
 </template>
 <script>
-import start_bg_watcher from '@/bg-location.js';
+import start_bg_watcher from "@/bg-location.js";
+import LoginView from "@/auth/login.vue";
 
 export default {
-  setup () {
-    console.log('NARF SETUP');
-    start_bg_watcher();
-  }
-}
+  components: {LoginView},
+  setup() {
+    if (Capacitor.getPlatform() != "web") {
+      start_bg_watcher();
+    }
+  },
+};
 </script>
