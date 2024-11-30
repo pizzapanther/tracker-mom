@@ -1,6 +1,7 @@
 import { createApp } from "vue";
-import { Quasar } from "quasar";
+import { Quasar, Notify, Dialog } from "quasar";
 
+import iconSet from "quasar/icon-set/mdi-v7.js";
 import "@quasar/extras/roboto-font/roboto-font.css";
 import "@quasar/extras/mdi-v7/mdi-v7.css";
 
@@ -11,7 +12,23 @@ import App from "./app.vue";
 const myApp = createApp(App);
 
 myApp.use(Quasar, {
-  plugins: {}, // import Quasar plugins and add here
+  plugins: {Notify, Dialog},
+  iconSet: iconSet,
+  config: {
+    brand: {
+      primary: "#247d97",
+      secondary: "#f2b934",
+      accent: "#f24e34",
+
+      dark: "#1d1d1d",
+      "dark-page": "#121212",
+
+      positive: "#46b05f",
+      negative: "#bd2436",
+      info: "#68afc3",
+      warning: "#ffce5b",
+    },
+  },
 });
 
 myApp.mount("#q-app");

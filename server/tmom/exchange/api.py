@@ -84,7 +84,8 @@ def accept_location_share(request, data: AcceptInput):
 
 @router.get("/auth/check", response=AuthSchema)
 def auth_check(request):
-  return {"id": request.user.id, "expires": request.session.get_expiry_date().isoformat()}
+  session = getattr(request, 'api_session', request.session)
+  return {"id": request.user.id, "expires": session.get_expiry_date().isoformat()}
 
 
 @router.get("/follow/list", response=List[FollowSchema])

@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh lpR fFf">
-    <q-page-container>
+    <q-page-container class="main-container">
       <login-view></login-view>
     </q-page-container>
 
@@ -21,7 +21,7 @@ import start_bg_watcher from "@/bg-location.js";
 import LoginView from "@/auth/login.vue";
 
 export default {
-  components: {LoginView},
+  components: { LoginView },
   setup() {
     if (Capacitor.getPlatform() != "web") {
       start_bg_watcher();
@@ -29,3 +29,8 @@ export default {
   },
 };
 </script>
+<style>
+.main-container {
+  padding: 10px 5px;
+}
+</style>

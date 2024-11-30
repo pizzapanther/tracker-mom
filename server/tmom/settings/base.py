@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from pathlib import Path
+from corsheaders.defaults import default_headers
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -33,6 +34,7 @@ INSTALLED_APPS = [
   "django.contrib.sessions",
   "django.contrib.messages",
   "django.contrib.staticfiles",
+  "corsheaders",
   "allauth_ui",
   "allauth",
   "allauth.account",
@@ -46,6 +48,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
   "django.middleware.security.SecurityMiddleware",
   "django.contrib.sessions.middleware.SessionMiddleware",
+  "corsheaders.middleware.CorsMiddleware",
   "django.middleware.common.CommonMiddleware",
   "django.middleware.csrf.CsrfViewMiddleware",
   "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -152,10 +155,19 @@ APP_BASE_URL = "https://app.tracker.mom"
 # in Minutes - Default 1 hr
 EXCHANGE_EXPIRATION = int(os.environ.get("EXCHANGE_EXPIRATION", "3600"))
 
-REDIS_URL = os.environ.get("REDIS_URL", "redis://127.0.0.1:6379")
+REDIS_URL = os.environ.get("REDIS_URL", "redis://redis:6379")
 CACHES = {
   "default": {
     "BACKEND": "django.core.cache.backends.redis.RedisCache",
     "LOCATION": REDIS_URL,
   }
 }
+
+CORS_ALLOWED_ORIGIN_REGEXES = [
+  r"^https?://localhost:\d+$",
+]
+
+CORS_ALLOW_HEADERS = (
+    *default_headers,
+    "x-session-token",
+)

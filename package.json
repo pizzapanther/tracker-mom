@@ -5,8 +5,8 @@
   "main": "app/index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --watch app -e js,vue,html,png,jpg -x \"vite build && cap sync\"",
-    "webdev": "vite serve",
+    "dev": "dotenvx run -- nodemon --watch app -e js,vue,html,png,jpg -x \"vite build && cap sync\"",
+    "webdev": "dotenvx run -- vite serve",
     "format": "prettier -w app/"
   },
   "author": "",
@@ -18,8 +18,11 @@
     "@capacitor/core": "^6.1.2",
     "@capacitor/ios": "^6.1.2",
     "@capacitor/local-notifications": "^6.1.0",
+    "@dotenvx/dotenvx": "^1.25.1",
     "@quasar/extras": "^1.16.12",
     "@quasar/vite-plugin": "^1.7.0",
+    "axios": "^1.7.8",
+    "localstorage-ttl": "^2.0.10",
     "nodemon": "^3.1.7",
     "prettier": "^3.4.1",
     "quasar": "^2.17.0",
