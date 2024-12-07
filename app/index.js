@@ -7,12 +7,14 @@ import "@quasar/extras/mdi-v7/mdi-v7.css";
 
 import "quasar/dist/quasar.css";
 
+import TmomTitle from "./components/title.vue";
+
 import App from "./app.vue";
 
 const myApp = createApp(App);
 
 myApp.use(Quasar, {
-  plugins: {Notify, Dialog},
+  plugins: { Notify, Dialog },
   iconSet: iconSet,
   config: {
     brand: {
@@ -31,4 +33,5 @@ myApp.use(Quasar, {
   },
 });
 
+myApp.component("TmomTitle", TmomTitle);
 myApp.mount("#q-app");

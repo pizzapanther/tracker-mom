@@ -4,13 +4,12 @@
       <login-view></login-view>
     </q-page-container>
 
-    <q-footer elevated class="bg-grey-8 text-white">
+    <q-footer elevated class="text-white">
       <q-toolbar>
         <q-toolbar-title>
           <q-avatar>
-            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
+            <img src="img/tmom-192.png" />
           </q-avatar>
-          <div>Title</div>
         </q-toolbar-title>
       </q-toolbar>
     </q-footer>
@@ -18,6 +17,7 @@
 </template>
 <script>
 import start_bg_watcher from "@/bg-location.js";
+
 import LoginView from "@/auth/login.vue";
 
 export default {
@@ -30,6 +30,14 @@ export default {
 };
 </script>
 <style>
+h1 {
+  margin: 0;
+  font-weight: bold;
+  font-size: 1.3rem;
+  line-height: 1.3rem;
+  padding: 0 5px 10px 5px;
+}
+
 .main-container {
   padding: 10px 5px;
 }
