@@ -8,6 +8,16 @@ class API {
       baseURL: import.meta.env.VITE_SERVER_URL,
       timeout: 10000
     });
+
+    this.auth_token= null;
+    this.restore_auth();
+  }
+
+  restore_auth() {
+    var token = ls.get('auth-token');
+    if (token) {
+      this.auth_token = token;
+    }
   }
 
   store_auth(data) {
