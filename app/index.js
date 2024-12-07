@@ -9,10 +9,12 @@ import "quasar/dist/quasar.css";
 
 import TmomTitle from "./components/title.vue";
 
-import App from "./app.vue";
+import router from "@/router.js";
+import App from "@/app.vue";
 
 const myApp = createApp(App);
 
+myApp.use(router);
 myApp.use(Quasar, {
   plugins: { Notify, Dialog },
   iconSet: iconSet,

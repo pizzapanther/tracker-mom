@@ -17,6 +17,7 @@
 <script>
 import { ref } from "vue";
 import { useQuasar } from "quasar";
+import { useRouter, useRoute } from "vue-router";
 
 import API from "@/api.js";
 
@@ -27,15 +28,19 @@ export default {
     var email = ref("");
     var password = ref("");
 
+    const router = useRouter();
+    const route = useRoute();
+
     function onSubmit() {
       api
         .login(email.value, password.value)
         .then((resp) => {
-          api.store_auth(resp.data);
+          api.set_auth(resp.data);
           return api.auth_check();
         })
         .then((resp) => {
-          console.log(resp.data);
+          api.store_auth(resp.data);
+          router.push(route.query.next);
         })
         .catch((err) => {
           console.log(err);

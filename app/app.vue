@@ -1,14 +1,14 @@
 <template>
   <q-layout view="hHh lpR fFf">
     <q-page-container class="main-container">
-      <login-view></login-view>
+      <RouterView />
     </q-page-container>
 
     <q-footer elevated class="text-white">
       <q-toolbar>
         <q-toolbar-title>
           <q-avatar>
-            <img src="img/tmom-192.png" />
+            <img src="/img/tmom-192.png" />
           </q-avatar>
         </q-toolbar-title>
       </q-toolbar>
@@ -18,10 +18,7 @@
 <script>
 import start_bg_watcher from "@/bg-location.js";
 
-import LoginView from "@/auth/login.vue";
-
 export default {
-  components: { LoginView },
   setup() {
     if (Capacitor.getPlatform() != "web") {
       start_bg_watcher();

@@ -19,9 +19,28 @@ class API {
     }
   }
 
-  store_auth(data) {
-    ls.set("auth-token", data.meta.session_token, 1000 * 60 * 60 * 24);
+  set_auth(data) {
     this.auth_token = data.meta.session_token;
+  }
+
+  store_auth(data) {
+    var now = Date.now();
+    var exp = new Date(data.expires).getTime();
+
+    // expire 4 hours before token expires/default django 14 days
+    var ttl = exp - now - 60 * 60 * 1000 * 4;
+    ls.set("auth-token", this.auth_token, ttl);
+  }
+
+  isAuthenticated() {
+    const token = ls.get("auth-token");
+
+    if (token) {
+      this.auth_token = token;
+      return true;
+    }
+
+    return false;
   }
 
   auth_config() {
@@ -33,8 +52,8 @@ class API {
   }
 
   auth_check() {
-    return this.ax.get("/api/v1/exchange/auth/check", this.auth_config());
     // return this.ax.get('/api/auth/app/v1/auth/session', this.auth_config());
+    return this.ax.get("/api/v1/exchange/auth/check", this.auth_config());
   }
 }
 
