@@ -1,6 +1,9 @@
 import { createWebHistory, createRouter } from "vue-router";
 
 import API from "@/api.js";
+
+import NotFound from "@/components/not-found.vue";
+
 import HomeView from "@/home/home.vue";
 import LoginView from "@/auth/login.vue";
 
@@ -9,6 +12,7 @@ import useAppStore from "@/store.js";
 const routes = [
   { path: "/", component: HomeView, name: "home" },
   { path: "/auth/login/", component: LoginView, name: "auth-login" },
+  { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
 ];
 
 const router = createRouter({
