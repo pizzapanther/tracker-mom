@@ -5,13 +5,20 @@
     </q-page-container>
 
     <q-footer elevated class="text-white">
-      <q-toolbar>
-        <q-toolbar-title>
-          <q-avatar>
-            <img src="/img/tmom-192.png" />
-          </q-avatar>
-        </q-toolbar-title>
-      </q-toolbar>
+      <q-tabs>
+        <q-route-tab
+          to="/"
+          name="home"
+          icon="img:/img/tmom-192.png"
+          label="Dashboard"
+        />
+        <q-route-tab
+          to="/follows/"
+          name="Follows"
+          icon="mdi-account-group"
+          label="Follows"
+        />
+      </q-tabs>
     </q-footer>
   </q-layout>
 </template>
