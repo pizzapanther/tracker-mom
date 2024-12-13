@@ -17,12 +17,16 @@
 </template>
 <script>
 import start_bg_watcher from "@/bg-location.js";
+import useAppStore from "@/store.js";
 
 export default {
   setup() {
-    if (Capacitor.getPlatform() != "web") {
-      start_bg_watcher();
-    }
+    start_bg_watcher();
+
+    const store = useAppStore();
+    store.$subscribe((mutation, state) => {
+      console.log("Auth", state.authenticated);
+    });
   },
 };
 </script>

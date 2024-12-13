@@ -3,7 +3,7 @@
     <span v-if="$slots.default">
       <slot></slot>
     </span>
-    <span class="app">Tracker Mom</span>
+    <span class="app">Tracker.mom</span>
   </h1>
 </template>
 <script>
