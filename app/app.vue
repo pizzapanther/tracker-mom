@@ -1,6 +1,9 @@
 <template>
   <q-layout view="hHh lpR fFf">
-    <q-page-container class="main-container">
+    <q-page-container
+      class="main-container"
+      style="margin: 0 auto; max-width: 500px"
+    >
       <RouterView />
     </q-page-container>
 
@@ -34,6 +37,15 @@ export default {
     store.$subscribe((mutation, state) => {
       console.log("Auth", state.authenticated);
     });
+    store
+      .get_follows()
+      .then((data) => {
+        console.log("Follows Loaded", data);
+      })
+      .catch((e) => {
+        console.error(e);
+        console.log("Ignoring On Load Error");
+      });
   },
 };
 </script>
