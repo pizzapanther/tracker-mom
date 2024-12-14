@@ -20,6 +20,24 @@ export const useAppStore = defineStore("appstate", {
         return resp.data.items;
       }
     },
+    report_location(coords) {
+      console.log("Reporting:", coords);
+      if (api.isAuthenticated()) {
+        var messages = [];
+
+        for (var i = 0; i < this.follows.length; i++) {
+          var f = this.follows[i];
+          messages.push({ following: f.following.id, payload: "narf" });
+        }
+
+        api
+          .location_push(messages)
+          .then(() => {})
+          .catch((e) => {
+            console.error(e);
+          });
+      }
+    },
   },
 });
 

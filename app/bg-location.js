@@ -57,8 +57,7 @@ export function app_bg_watcher(store) {
 
 function web_bg_watcher(store) {
   navigator.geolocation.watchPosition((position) => {
-    console.log(position.coords);
-    console.log(store.follows);
+    store.report_location(position.coords);
   });
 }
 

@@ -38,7 +38,7 @@ allauth_headless = AllAuthHeadless()
 
 
 api_v1 = NinjaAPI(
-  title="Tracker Mom API", description="OpenAPI Docs", docs=Redoc(), auth=allauth_headless
+  title="Tracker Mom API", description="OpenAPI Docs", docs=Redoc(), auth=allauth_headless, csrf=False
 )
 
 api_v1.add_router("/exchange/", exchange_router, tags=["exchange"])

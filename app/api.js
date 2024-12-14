@@ -59,6 +59,14 @@ class API {
   list_follows() {
     return this.ax.get("/api/v1/exchange/follow/list", this.auth_config());
   }
+
+  location_push(messages) {
+    return this.ax.post(
+      "/api/v1/exchange/location/push",
+      messages,
+      this.auth_config(),
+    );
+  }
 }
 
 export default API;
