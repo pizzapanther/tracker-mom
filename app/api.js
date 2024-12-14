@@ -55,6 +55,10 @@ class API {
     // return this.ax.get('/api/auth/app/v1/auth/session', this.auth_config());
     return this.ax.get("/api/v1/exchange/auth/check", this.auth_config());
   }
+
+  list_follows() {
+    return this.ax.get("/api/v1/exchange/follow/list", this.auth_config());
+  }
 }
 
 export default API;

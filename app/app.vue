@@ -41,9 +41,23 @@ export default {
 h1 {
   margin: 0;
   font-weight: bold;
+  font-size: 1.4rem;
+  line-height: 1.4rem;
+  padding: 0 5px 10px 5px;
+}
+
+h2 {
+  margin: 10px 0;
   font-size: 1.3rem;
   line-height: 1.3rem;
-  padding: 0 5px 10px 5px;
+  font-weight: bold;
+}
+
+h3 {
+  margin: 10px 0;
+  font-size: 1.2rem;
+  line-height: 1.2rem;
+  font-weight: bold;
 }
 
 .main-container {

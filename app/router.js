@@ -27,7 +27,9 @@ router.beforeEach((to, from, next) => {
   var api = new API();
   const store = useAppStore();
 
-  if (to.name == "auth-login" || api.isAuthenticated()) {
+  if (to.name == "auth-login") {
+    next();
+  } else if (api.isAuthenticated()) {
     store.authenticated = true;
     next();
   } else {
