@@ -1,8 +1,9 @@
 import { registerPlugin, Capacitor } from "@capacitor/core";
+import useAppStore from "@/store.js";
 
 const platform = Capacitor.getPlatform();
 if (platform != "web") {
-  const BackgroundGeolocation = registerPlugin("BackgroundGeolocation");
+  var BackgroundGeolocation = registerPlugin("BackgroundGeolocation");
 }
 
 function watcher_callback(location, error) {
@@ -29,7 +30,7 @@ function watcher_callback(location, error) {
   return console.log(location);
 }
 
-export function app_bg_watcher() {
+export function app_bg_watcher(store) {
   var options = {
     backgroundMessage: "Tracker Mom running in the background.",
     backgroundTitle: "Tracker Mom Service",
@@ -54,21 +55,21 @@ export function app_bg_watcher() {
   );
 }
 
-function web_bg_watcher() {
-  navigator.geolocation.watchPosition(web_position);
-}
-
-function web_position(position) {
-  console.log(position.coords);
+function web_bg_watcher(store) {
+  navigator.geolocation.watchPosition((position) => {
+    console.log(position.coords);
+    console.log(store.follows);
+  });
 }
 
 export function start_bg_watcher() {
   console.log("Starting BG Watcher:", platform);
+  const store = useAppStore();
 
   if (platform == "web") {
-    web_bg_watcher();
+    web_bg_watcher(store);
   } else {
-    app_bg_watcher();
+    app_bg_watcher(store);
   }
 }
 
