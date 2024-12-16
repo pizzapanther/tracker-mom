@@ -15,7 +15,7 @@
         size="sm"
         label="Add"
         icon="mdi-plus"
-        to="/follows/add/"
+        to="/follow/add/"
       />
     </q-btn-group>
     <q-card class="text-negative" flat v-if="error">

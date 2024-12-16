@@ -16,7 +16,7 @@
           label="Dashboard"
         />
         <q-route-tab
-          to="/follows/"
+          to="/follow/"
           name="Follows"
           icon="mdi-account-group"
           label="Follows"

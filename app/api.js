@@ -67,6 +67,14 @@ class API {
       this.auth_config(),
     );
   }
+
+  create_invite(pubkey) {
+    return this.ax.post(
+      "/api/v1/exchange/follow/request",
+      { pubkey },
+      this.auth_config(),
+    );
+  }
 }
 
 export default API;

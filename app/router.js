@@ -7,14 +7,16 @@ import NotFound from "@/components/not-found.vue";
 import HomeView from "@/home/home.vue";
 import LoginView from "@/auth/login.vue";
 
-import FollowList from "@/follows/follow-list.vue";
+import FollowList from "@/follow/follow-list.vue";
+import FollowInvite from "@/follow/invite.vue";
 
 import useAppStore from "@/store.js";
 
 const routes = [
   { path: "/", component: HomeView, name: "home" },
   { path: "/auth/login/", component: LoginView, name: "auth-login" },
-  { path: "/follows/", component: FollowList, name: "follows-list" },
+  { path: "/follow/add/", component: FollowInvite, name: "follow-invite" },
+  { path: "/follow/", component: FollowList, name: "follow-list" },
   { path: "/:pathMatch(.*)*", name: "NotFound", component: NotFound },
 ];
 
