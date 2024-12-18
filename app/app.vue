@@ -12,7 +12,7 @@
         <q-route-tab
           to="/"
           name="home"
-          icon="img:/img/tmom-192.png"
+          :icon="`img:${tmomImg}`"
           label="Dashboard"
         />
         <q-route-tab
@@ -28,6 +28,8 @@
 <script>
 import start_bg_watcher from "@/bg-location.js";
 import useAppStore from "@/store.js";
+
+import tmomImg from "@/img/tmom-192.png";
 
 export default {
   setup() {
@@ -46,6 +48,8 @@ export default {
         console.error(e);
         console.log("Ignoring On Load Error");
       });
+
+    return { tmomImg };
   },
 };
 </script>

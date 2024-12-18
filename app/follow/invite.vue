@@ -52,14 +52,14 @@ export default {
 
           let subject = `Follow Me On Tracker.Mom`;
           let intro =
-            "Come follow me and share your location on Tracker.mom. Use the link below to join.";
+            "Come follow me and share your location on Tracker.mom. Use the link to join.";
           let post =
             "Tracker.Mom is the secure and private location sharing app for family and friends.";
           let tbody = `${intro} ${resp.data.url}`;
           let ebody = `${encodeURIComponent(intro + "<br><br>")}${encodeURIComponent(resp.data.url + "<br><br>")}${encodeURIComponent(post)}`;
           links.value = {
             email: `mailto:?subject=${encodeURIComponent(subject)}&body=${ebody}`,
-            text: `sms:?&body=${encodeURIComponent(tbody)}`,
+            sms: `sms:?&body=${encodeURIComponent(tbody)}`,
           };
         })
         .catch((e) => {
