@@ -18,8 +18,8 @@ def test_invite_flow(api_client, django_user_model):
   response = api_client.json_post(f"{BASE_URL}/follow/request", {"pubkey": "mypubkey"})
   assert response.status_code == 200
   data = response.json()
-  token = data["url"].split("/")[-1]
-  assert token
+  code = data["url"].split("/")[-1]
+  assert code
 
   user2 = django_user_model.objects.create_user(
     username="user2@aol.com", email="user2@aol.com", password="narf"
@@ -27,7 +27,7 @@ def test_invite_flow(api_client, django_user_model):
   api_client.force_login(user2)
 
   idata = {
-    "token": token,
+    "code": code,
     "pubkey": "mypubkey-user2",
   }
   response = api_client.json_post(f"{BASE_URL}/follow/accept", idata)

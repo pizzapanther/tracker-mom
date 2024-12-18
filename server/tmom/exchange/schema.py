@@ -44,7 +44,7 @@ class FollowSchema(ModelSchema):
 
 
 class AcceptInput(Schema):
-  token: str
+  code: str
   pubkey: str
 
 

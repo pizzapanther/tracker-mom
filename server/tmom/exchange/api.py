@@ -1,12 +1,11 @@
 import datetime
-import random
 from typing import List
 
-import jwt
+from haikunator import Haikunator
+
 from ninja import Router
 from ninja.errors import HttpError
 from ninja.pagination import paginate
-from wonderwords import RandomWord
 
 from django.conf import settings
 from django.utils import timezone
@@ -28,37 +27,22 @@ router = Router()
 
 @router.post("/follow/request", response=InviteSchema)
 def request_location_share(request, data: FollowInput):
-  rw = RandomWord()
+  haikunator = Haikunator()
   while 1:
-    word = rw.word(word_min_length=4, word_max_length=5)
-    num = str(random.randint(0, 9999))
-    num = num.zfill(4)
-    code = f"{word}-{num}"
-
+    code = haikunator.haikunate()
     if FollowRequest.objects.filter(code=code).count() == 0:
       break
 
   req = FollowRequest(owner=request.user, code=code, pubkey=data.pubkey)
   req.save()
 
-  payload = {
-    "invite-code": code,
-    "exp": timezone.now() + datetime.timedelta(minutes=settings.FOLLOW_REQUEST_EXPIRATION),
-  }
-  encoded = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
-  return {"status": "OK", "url": f"{settings.APP_BASE_URL}/account/accept-invite/{encoded}"}
+  return {"status": "OK", "url": f"{settings.APP_BASE_URL}/invite/{code}"}
 
 
 @router.post("/follow/accept", response=FollowSchema)
 def accept_location_share(request, data: AcceptInput):
-  try:
-    payload = jwt.decode(data.token, settings.SECRET_KEY, algorithms=["HS256"])
-
-  # ruff: noqa: E722
-  except:
-    return HttpError(400, "Invalid token")
-
-  req = FollowRequest.objects.filter(code=payload["invite-code"]).first()
+  old = timezone.now() - datetime.timedelta(minutes=settings.FOLLOW_REQUEST_EXPIRATION)
+  req = FollowRequest.objects.filter(code=data.code, created__gte=old).first()
   if req is None:
     return HttpError(400, "Invalid invite code")
 
