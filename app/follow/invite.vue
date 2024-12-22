@@ -29,10 +29,7 @@ import { ref } from "vue";
 import API from "@/api.js";
 import EMachine from "@/encrypt.js";
 
-import ErrorBanner from "@/components/error.vue";
-
 export default {
-  components: { ErrorBanner },
   setup() {
     var api = new API();
     var invite = ref(null);

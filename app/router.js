@@ -9,12 +9,14 @@ import LoginView from "@/auth/login.vue";
 
 import FollowList from "@/follow/follow-list.vue";
 import FollowInvite from "@/follow/invite.vue";
+import AcceptInvite from "@/follow/accept.vue";
 
 import useAppStore from "@/store.js";
 
 const routes = [
   { path: "/", component: HomeView, name: "home" },
   { path: "/auth/login/", component: LoginView, name: "auth-login" },
+  { path: "/invite/:code", component: AcceptInvite, name: "follow-accept" },
   { path: "/follow/add/", component: FollowInvite, name: "follow-invite" },
   { path: "/follow/", component: FollowList, name: "follow-list" },
   { path: "/:pathMatch(.*)*", name: "NotFound", component: NotFound },

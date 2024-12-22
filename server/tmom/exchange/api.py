@@ -15,6 +15,7 @@ from tmom.exchange.schema import (
   InviteSchema,
   FollowInput,
   FollowSchema,
+  RequestSchema,
   AcceptInput,
   AuthSchema,
   LocationShareInput,
@@ -36,13 +37,23 @@ def request_location_share(request, data: FollowInput):
   req = FollowRequest(owner=request.user, code=code, pubkey=data.pubkey)
   req.save()
 
-  return {"status": "OK", "url": f"{settings.APP_BASE_URL}/invite/{code}"}
+  return {"status": "OK", "url": f"{settings.APP_BASE_URL}/#/invite/{code}"}
+
+
+@router.get("/follow/accept", response=RequestSchema)
+def view_location_share(request, code: str):
+  old = timezone.now() - datetime.timedelta(minutes=settings.FOLLOW_REQUEST_EXPIRATION)
+  req = FollowRequest.objects.filter(code=code, created__gte=old, used_on__isnull=True).first()
+  if req is None:
+    return HttpError(400, "Invalid invite code")
+
+  return req
 
 
 @router.post("/follow/accept", response=FollowSchema)
 def accept_location_share(request, data: AcceptInput):
   old = timezone.now() - datetime.timedelta(minutes=settings.FOLLOW_REQUEST_EXPIRATION)
-  req = FollowRequest.objects.filter(code=data.code, created__gte=old).first()
+  req = FollowRequest.objects.filter(code=data.code, created__gte=old, used_on__isnull=True).first()
   if req is None:
     return HttpError(400, "Invalid invite code")
 

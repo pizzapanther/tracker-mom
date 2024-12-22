@@ -43,8 +43,10 @@ class API {
     return false;
   }
 
-  auth_config() {
-    return { headers: { "X-Session-Token": this.auth_token } };
+  auth_config(kwargs) {
+    kwargs = kwargs || {};
+    var config = { ...kwargs, headers: { "X-Session-Token": this.auth_token } };
+    return config;
   }
 
   login(email, password) {
@@ -72,6 +74,21 @@ class API {
     return this.ax.post(
       "/api/v1/exchange/follow/request",
       { pubkey },
+      this.auth_config(),
+    );
+  }
+
+  get_invite(code) {
+    return this.ax.get(
+      "/api/v1/exchange/follow/accept",
+      this.auth_config({ params: { code } }),
+    );
+  }
+
+  accept_invite(code, pubkey) {
+    return this.ax.post(
+      "/api/v1/exchange/follow/accept",
+      { code, pubkey },
       this.auth_config(),
     );
   }

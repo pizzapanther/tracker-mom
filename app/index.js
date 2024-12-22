@@ -8,7 +8,8 @@ import "@quasar/extras/mdi-v7/mdi-v7.css";
 
 import "quasar/dist/quasar.css";
 
-import TmomTitle from "./components/title.vue";
+import TmomTitle from "@/components/title.vue";
+import ErrorBanner from "@/components/error.vue";
 
 import router from "@/router.js";
 import App from "@/app.vue";
@@ -39,4 +40,5 @@ myApp.use(Quasar, {
 });
 
 myApp.component("TmomTitle", TmomTitle);
+myApp.component("ErrorBanner", ErrorBanner);
 myApp.mount("#q-app");
