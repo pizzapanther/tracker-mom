@@ -37,6 +37,15 @@ class EMachine {
     };
     this.db.add_active_key(obj);
   }
+
+  store_invited_key() {
+    var obj = {
+      private: this.private_key.toHex(),
+      public: this.public_key.toHex(),
+      created: Date.now(),
+    };
+    this.db.add_invite_key(obj);
+  }
 }
 
 export default EMachine;

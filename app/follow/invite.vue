@@ -59,7 +59,7 @@ export default {
             sms: `sms:?&body=${encodeURIComponent(tbody)}`,
           };
 
-          // emachine.store_invited_key();
+          emachine.store_invited_key();
         })
         .catch((e) => {
           console.error(e);
