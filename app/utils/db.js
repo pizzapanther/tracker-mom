@@ -33,6 +33,10 @@ class KeyDB {
       .catch(fail);
   }
 
+  get_active_key(pubkey) {
+    return this.db.get(this.active_store, pubkey);
+  }
+
   add_invite_key(key_obj) {
     this.db
       .add(this.invite_store, key_obj)

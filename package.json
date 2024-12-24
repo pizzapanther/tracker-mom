@@ -22,6 +22,7 @@
     "@quasar/extras": "^1.16.12",
     "@quasar/vite-plugin": "^1.7.0",
     "axios": "^1.7.8",
+    "buffer": "^6.0.3",
     "eciesjs": "^0.4.12",
     "idb": "^8.0.1",
     "localstorage-ttl": "^2.0.10",
