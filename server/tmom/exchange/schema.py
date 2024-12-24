@@ -58,6 +58,7 @@ class RequestSchema(ModelSchema):
 
 class FollowSchema(ModelSchema):
   following: UserSchema
+  owner_pubkey: str
 
   class Meta:
     model = Follow

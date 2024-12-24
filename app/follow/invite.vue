@@ -27,7 +27,7 @@
 import { ref } from "vue";
 
 import API from "@/api.js";
-import EMachine from "@/encrypt.js";
+import EMachine from "@/utils/encrypt.js";
 
 export default {
   setup() {
@@ -58,6 +58,8 @@ export default {
             email: `mailto:?subject=${encodeURIComponent(subject)}&body=${ebody}`,
             sms: `sms:?&body=${encodeURIComponent(tbody)}`,
           };
+
+          // emachine.store_invited_key();
         })
         .catch((e) => {
           console.error(e);

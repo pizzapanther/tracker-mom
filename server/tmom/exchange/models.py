@@ -27,6 +27,11 @@ class Follow(models.Model):
   def __str__(self):
     return f"{self.owner} -> {self.following}"
 
+  @property
+  def owner_pubkey(self):
+    follow_back = Follow.objects.filter(owner=self.following, following=self.owner).first()
+    return follow_back.follow_pubkey
+
 
 class FollowRequest(models.Model):
   owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

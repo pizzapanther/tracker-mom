@@ -18,7 +18,7 @@ import { ref } from "vue";
 import { useQuasar } from "quasar";
 import { useRoute, useRouter } from "vue-router";
 
-import EMachine from "@/encrypt.js";
+import EMachine from "@/utils/encrypt.js";
 
 import API from "@/api.js";
 
@@ -54,8 +54,7 @@ export default {
             type: "positive",
             timeout: 3000,
           });
-          console.log(resp.data);
-          // emachine.store_key();
+          emachine.store_active_key(resp.data.follow_pubkey);
           router.push("/");
         })
         .catch((e) => {
