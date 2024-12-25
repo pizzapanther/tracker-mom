@@ -6,6 +6,8 @@ import KeyDB from "@/utils/db.js";
 ECIES_CONFIG.ellipticCurve = "x25519";
 ECIES_CONFIG.symmetricAlgorithm = "xchacha20";
 
+var db = new KeyDB();
+
 class EMachine {
   constructor(private_key, public_key, follow_pubkey) {
     this.encoder = new TextEncoder();
@@ -33,7 +35,6 @@ class EMachine {
   }
 
   store_active_key(follow_key) {
-    var db = new KeyDB();
     var obj = {
       private: this.private_key.toHex(),
       public: this.public_key.toHex(),
@@ -44,7 +45,6 @@ class EMachine {
   }
 
   store_invited_key() {
-    var db = new KeyDB();
     var obj = {
       private: this.private_key.toHex(),
       public: this.public_key.toHex(),
