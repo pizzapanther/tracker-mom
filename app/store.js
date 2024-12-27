@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 
 import API from "@/api.js";
 import KeyDB from "@/utils/db.js";
+import EMachine from "@/utils/encrypt.js";
 
 var api = new API();
 var db = new KeyDB();
@@ -11,6 +12,7 @@ export const useAppStore = defineStore("appstate", {
     return {
       authenticated: false,
       follows: [],
+      locations: [],
     };
   },
   getters: {},
@@ -45,23 +47,31 @@ export const useAppStore = defineStore("appstate", {
         }
       }
     },
-    report_location(coords) {
+    async report_location(coords) {
       console.log("Reporting:", coords);
       if (api.isAuthenticated()) {
         var messages = [];
 
         for (var i = 0; i < this.follows.length; i++) {
-          var f = this.follows[i];
-          messages.push({ following: f.following.id, payload: "narf" });
+          let f = this.follows[i];
+          if (!f.emachine) {
+            f.emachine = await EMachine.emachine_for(f.follow_pubkey);
+          }
+
+          let data = { latitude: coords.latitude, longitude: coords.longitude };
+          messages.push({
+            following: f.following.id,
+            payload: f.emachine.encrypt(data),
+          });
         }
 
-        api
-          .location_push(messages)
-          .then(() => {})
-          .catch((e) => {
-            console.error(e);
-          });
+        console.log("Push Messages", messages);
+        await api.location_push(messages);
       }
+    },
+    async pull_messages() {
+      let resp = await api.pull_messages();
+      console.log("Pulled", resp.data.items);
     },
   },
 });

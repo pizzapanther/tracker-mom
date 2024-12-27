@@ -3,6 +3,7 @@ import { ECIES_CONFIG, PrivateKey, PublicKey, decrypt, encrypt } from "eciesjs";
 
 import KeyDB from "@/utils/db.js";
 
+globalThis.Buffer = Buffer;
 ECIES_CONFIG.ellipticCurve = "x25519";
 ECIES_CONFIG.symmetricAlgorithm = "xchacha20";
 
@@ -53,9 +54,8 @@ class EMachine {
     db.add_invite_key(obj);
   }
 
-  static encrypt_for(pubkey, data) {
+  static emachine_for(pubkey, data) {
     return new Promise((resolve, reject) => {
-      var db = new KeyDB();
       db.get_active_key(pubkey)
         .then((obj) => {
           var emachine = new EMachine(
@@ -63,7 +63,7 @@ class EMachine {
             obj.public,
             obj.follow_pubkey,
           );
-          resolve(emachine.encrypt(data));
+          resolve(emachine);
         })
         .catch((e) => {
           reject(e);
@@ -73,10 +73,11 @@ class EMachine {
 
   encrypt(data) {
     data = Buffer.from(JSON.stringify(data));
-    return encrypt(this.follow_pubkey.toBytes(), data);
+    return encrypt(this.follow_pubkey.toBytes(), data).toString("base64");
   }
 
   decrypt(data) {
+    data = Buffer.from(data, "base64");
     data = decrypt(this.private_key.secret, data);
     return Buffer.from(data).toString();
   }

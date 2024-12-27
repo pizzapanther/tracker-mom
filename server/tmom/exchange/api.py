@@ -28,6 +28,9 @@ router = Router()
 
 @router.post("/follow/request", response=InviteSchema)
 def request_location_share(request, data: FollowInput):
+  """
+  Create a location share request
+  """
   haikunator = Haikunator()
   while 1:
     code = haikunator.haikunate()
@@ -42,6 +45,9 @@ def request_location_share(request, data: FollowInput):
 
 @router.get("/follow/accept", response=RequestSchema)
 def view_location_share(request, code: str):
+  """
+  Get share request
+  """
   old = timezone.now() - datetime.timedelta(minutes=settings.FOLLOW_REQUEST_EXPIRATION)
   req = FollowRequest.objects.filter(code=code, created__gte=old, used_on__isnull=True).first()
   if req is None:
@@ -52,6 +58,9 @@ def view_location_share(request, code: str):
 
 @router.post("/follow/accept", response=FollowSchema)
 def accept_location_share(request, data: AcceptInput):
+  """
+  Accept share request
+  """
   old = timezone.now() - datetime.timedelta(minutes=settings.FOLLOW_REQUEST_EXPIRATION)
   req = FollowRequest.objects.filter(code=data.code, created__gte=old, used_on__isnull=True).first()
   if req is None:
@@ -79,6 +88,9 @@ def accept_location_share(request, data: AcceptInput):
 
 @router.get("/auth/check", response=AuthSchema)
 def auth_check(request):
+  """
+  Get user session expiration timestamp
+  """
   session = getattr(request, 'api_session', request.session)
   return {"id": request.user.id, "expires": session.get_expiry_date().isoformat()}
 
@@ -86,11 +98,20 @@ def auth_check(request):
 @router.get("/follow/list", response=List[FollowSchema])
 @paginate
 def follow_list(request):
+  """
+  List user follows
+  """
+  if request.method == "OPTIONS":
+    return Follow.objects.none()
+
   return Follow.objects.filter(owner=request.user, active=True).order_by("-created")
 
 
 @router.post("/location/push", response=SavedStatusSchema)
 def location_push(request, data: List[LocationShareInput]):
+  """
+  Push location messages to followers
+  """
   cnt = 0
   for d in data:
     follow = Follow.objects.filter(owner=request.user, following=d.following, active=True).first()
@@ -106,6 +127,13 @@ def location_push(request, data: List[LocationShareInput]):
 @router.get("/location/list", response=List[LocationShareSchema])
 @paginate
 def location_list(request):
+  """
+  Pull user location messages
+  """
+
+  if request.method == "OPTIONS":
+    return LocationShare.objects.none()
+
   qs = LocationShare.objects.filter(follow__following=request.user)
   LocationShare.cleanup(qs)
-  return qs
+  return qs.order_by("-created")

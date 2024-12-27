@@ -154,7 +154,7 @@ FOLLOW_REQUEST_EXPIRATION = int(os.environ.get("FOLLOW_REQUEST_EXPIRATION", "432
 APP_BASE_URL = os.environ.get("APP_BASE_URL", "https://app.tracker.mom")
 
 # in Minutes - Default 1 hr
-EXCHANGE_EXPIRATION = int(os.environ.get("EXCHANGE_EXPIRATION", "3600"))
+EXCHANGE_EXPIRATION = int(os.environ.get("EXCHANGE_EXPIRATION", "60"))
 
 REDIS_URL = os.environ.get("REDIS_URL", "redis://redis:6379")
 CACHES = {

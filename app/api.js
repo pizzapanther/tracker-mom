@@ -70,6 +70,13 @@ class API {
     );
   }
 
+  pull_messages() {
+    return this.ax.get(
+      `/api/v1/exchange/location/list?ts=${Date.now()}`,
+      this.auth_config(),
+    );
+  }
+
   create_invite(pubkey) {
     return this.ax.post(
       "/api/v1/exchange/follow/request",

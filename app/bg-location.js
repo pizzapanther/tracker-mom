@@ -56,9 +56,14 @@ export function app_bg_watcher(store) {
 }
 
 function web_bg_watcher(store) {
-  navigator.geolocation.watchPosition((position) => {
-    store.report_location(position.coords);
+  navigator.geolocation.watchPosition(async (position) => {
+    await store.report_location(position.coords);
   });
+}
+
+async function pull_locations(store) {
+  await store.pull_messages();
+  setTimeout(async () => await pull_locations(store), 60 * 1000);
 }
 
 export function start_bg_watcher() {
@@ -70,6 +75,8 @@ export function start_bg_watcher() {
   } else {
     app_bg_watcher(store);
   }
+
+  setTimeout(async () => await pull_locations(store), 3000);
 }
 
 export default start_bg_watcher;
