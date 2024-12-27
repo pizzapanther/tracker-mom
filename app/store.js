@@ -65,8 +65,10 @@ export const useAppStore = defineStore("appstate", {
           });
         }
 
-        console.log("Push Messages", messages);
-        await api.location_push(messages);
+        if (messages.length) {
+          console.log("Push Messages", messages);
+          await api.location_push(messages);
+        }
       }
     },
     async pull_messages() {

@@ -108,15 +108,18 @@ def follow_list(request):
 
 
 @router.post("/location/push", response=SavedStatusSchema)
-def location_push(request, data: List[LocationShareInput]):
+def location_push(request, data: LocationShareInput):
   """
   Push location messages to followers
   """
   cnt = 0
-  for d in data:
+  for d in data.messages:
     follow = Follow.objects.filter(owner=request.user, following=d.following, active=True).first()
 
     if follow:
+      if data.clear_previous:
+        LocationShare.objects.filter(follow=follow).delete()
+
       share = LocationShare(follow=follow, payload=d.payload)
       share.save()
       cnt += 1

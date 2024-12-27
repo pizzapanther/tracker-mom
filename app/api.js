@@ -65,7 +65,7 @@ class API {
   location_push(messages) {
     return this.ax.post(
       "/api/v1/exchange/location/push",
-      messages,
+      { clear_previous: true, messages },
       this.auth_config(),
     );
   }

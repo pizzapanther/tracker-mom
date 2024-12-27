@@ -1,3 +1,5 @@
+from typing import List
+
 from django.contrib.auth import get_user_model
 
 from ninja import Schema, ModelSchema
@@ -70,9 +72,14 @@ class AcceptInput(Schema):
   pubkey: str
 
 
-class LocationShareInput(Schema):
+class MessageInput(Schema):
   following: int
   payload: str
+
+
+class LocationShareInput(Schema):
+  clear_previous: bool
+  messages: List[MessageInput]
 
 
 class SavedStatusSchema(Schema):
