@@ -23,8 +23,8 @@ class KeyDB {
     return db.invited.delete(pubkey);
   }
 
-  async inactive_follows(callback) {
-    return db.invited.each(callback);
+  async inactive_follows() {
+    return db.invited.toArray();
   }
 }
 

@@ -26,10 +26,12 @@ export const useAppStore = defineStore("appstate", {
       }
     },
     async sync_follows(follows) {
-      db.inactive_follows((inactive) => {
-        for (var j = 0; j < follows.length; j++) {
-          var active = follows[j];
-          console.log(inactive.public, active.owner_pubkey);
+      let inactives = await db.inactive_follows();
+      for (var i = 0; i < inactives.length; i++) {
+        for (var f = 0; f < follows.length; f++) {
+          let inactive = inactives[i];
+          let active = follows[f];
+
           if (inactive.public == active.owner_pubkey) {
             var obj = {
               ...inactive,
@@ -38,10 +40,10 @@ export const useAppStore = defineStore("appstate", {
             };
             db.add_active_key(obj);
             db.delete_invite(inactive.public);
-            // todo notification
+            // todo: notification
           }
         }
-      });
+      }
     },
     report_location(coords) {
       console.log("Reporting:", coords);
