@@ -12,7 +12,7 @@ export const useAppStore = defineStore("appstate", {
     return {
       authenticated: false,
       follows: [],
-      locations: [],
+      locations: {},
     };
   },
   getters: {},
@@ -43,6 +43,7 @@ export const useAppStore = defineStore("appstate", {
             db.add_active_key(obj);
             db.delete_invite(inactive.public);
             // todo: notification
+            // todo: remove old pubkey
           }
         }
       }
@@ -73,7 +74,25 @@ export const useAppStore = defineStore("appstate", {
     },
     async pull_messages() {
       let resp = await api.pull_messages();
-      console.log("Pulled", resp.data.items);
+      resp.data.items.forEach(async (item) => {
+        for (var i = 0; i < this.follows.length; i++) {
+          let f = this.follows[i];
+          if (f.following.id == item.posted_by.id) {
+            if (!f.emachine) {
+              f.emachine = await EMachine.emachine_for(f.follow_pubkey);
+            }
+
+            try {
+              var l = await f.emachine.decrypt(item.payload);
+            } catch (e) {
+              console.error(e);
+            }
+
+            console.log(l);
+            this.locations[item.posted_by.id] = [l.latitude, l.longitude];
+          }
+        }
+      });
     },
   },
 });

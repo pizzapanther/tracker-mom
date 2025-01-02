@@ -54,7 +54,7 @@ class EMachine {
     db.add_invite_key(obj);
   }
 
-  static emachine_for(pubkey, data) {
+  static emachine_for(pubkey) {
     return new Promise((resolve, reject) => {
       db.get_active_key(pubkey)
         .then((obj) => {
@@ -79,7 +79,7 @@ class EMachine {
   decrypt(data) {
     data = Buffer.from(data, "base64");
     data = decrypt(this.private_key.secret, data);
-    return Buffer.from(data).toString();
+    return JSON.parse(Buffer.from(data).toString());
   }
 }
 
