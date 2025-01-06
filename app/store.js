@@ -13,6 +13,7 @@ export const useAppStore = defineStore("appstate", {
       authenticated: false,
       follows: [],
       locations: {},
+      mylocation: null,
     };
   },
   getters: {},
@@ -50,8 +51,10 @@ export const useAppStore = defineStore("appstate", {
     },
     async report_location(coords) {
       console.log("Reporting:", coords);
+
       if (api.isAuthenticated()) {
         var messages = [];
+        this.mylocation = [coords.latitude, coords.longitude, api.email];
 
         for (var i = 0; i < this.follows.length; i++) {
           let f = this.follows[i];
@@ -89,7 +92,11 @@ export const useAppStore = defineStore("appstate", {
             }
 
             console.log(l);
-            this.locations[item.posted_by.id] = [l.latitude, l.longitude];
+            this.locations[item.posted_by.id] = [
+              l.latitude,
+              l.longitude,
+              l.posted_by.email,
+            ];
           }
         }
       });

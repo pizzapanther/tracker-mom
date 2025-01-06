@@ -92,7 +92,11 @@ def auth_check(request):
   Get user session expiration timestamp
   """
   session = getattr(request, 'api_session', request.session)
-  return {"id": request.user.id, "expires": session.get_expiry_date().isoformat()}
+  return {
+    "id": request.user.id,
+    "expires": session.get_expiry_date().isoformat(),
+    "email": request.user.email,
+  }
 
 
 @router.get("/follow/list", response=List[FollowSchema])

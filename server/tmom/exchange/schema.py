@@ -13,6 +13,7 @@ User = get_user_model()
 class AuthSchema(Schema):
   id: int
   expires: str
+  email: str
 
 
 class UserSchema(ModelSchema):

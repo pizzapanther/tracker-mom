@@ -9,18 +9,23 @@ class API {
     });
 
     this.auth_token = null;
+    this.email = null;
     this.restore_auth();
   }
 
   restore_auth() {
     var token = ls.get("auth-token");
-    if (token) {
+    var email = ls.get("auth-email");
+
+    if (token && email) {
       this.auth_token = token;
+      this.email = email;
     }
   }
 
   set_auth(data) {
     this.auth_token = data.meta.session_token;
+    this.email = data.data.user.email;
   }
 
   store_auth(data) {
@@ -30,6 +35,7 @@ class API {
     // expire 4 hours before token expires/default django 14 days
     var ttl = exp - now - 60 * 60 * 1000 * 4;
     ls.set("auth-token", this.auth_token, ttl);
+    ls.set("auth-email", this.email, ttl);
   }
 
   isAuthenticated() {
