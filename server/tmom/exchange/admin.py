@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from tmom.exchange.models import Follow, FollowRequest
+from tmom.exchange.models import Follow, FollowRequest, LocationShare
 
 
 @admin.register(Follow)
@@ -18,3 +18,12 @@ class FollowRequestAdmin(admin.ModelAdmin):
   date_hierarchy = "created"
   search_fields = ("owner__email", "following__email")
   raw_id_fields = ("owner", "used_by")
+
+
+@admin.register(LocationShare)
+class ShareAdmin(admin.ModelAdmin):
+  list_display = ("follow", "created")
+  date_hierarchy = "created"
+  list_filter = ("created",)
+  search_fields = ("follow__email",)
+  raw_id_fields = ("follow",)

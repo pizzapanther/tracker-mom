@@ -43,6 +43,7 @@ export default {
       follows.forEach((f) => {
         var emachine = new EMachine(null, null, f.follow_pubkey);
         updates.push({ id: f.id, pubkey: emachine.pubkey });
+        emachine.store_active_key(f.follow_pubkey);
       });
 
       await api.rebuild_keys(updates);

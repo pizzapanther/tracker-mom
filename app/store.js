@@ -56,6 +56,7 @@ export const useAppStore = defineStore("appstate", {
         var messages = [];
         this.mylocation = [coords.latitude, coords.longitude, api.email];
 
+        console.log(messages, this.follows);
         for (var i = 0; i < this.follows.length; i++) {
           let f = this.follows[i];
           if (!f.emachine) {
