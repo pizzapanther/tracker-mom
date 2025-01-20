@@ -62,11 +62,16 @@ export const useAppStore = defineStore("appstate", {
             f.emachine = await EMachine.emachine_for(f.follow_pubkey);
           }
 
-          let data = { latitude: coords.latitude, longitude: coords.longitude };
-          messages.push({
-            following: f.following.id,
-            payload: f.emachine.encrypt(data),
-          });
+          if (f.emachine) {
+            let data = {
+              latitude: coords.latitude,
+              longitude: coords.longitude,
+            };
+            messages.push({
+              following: f.following.id,
+              payload: f.emachine.encrypt(data),
+            });
+          }
         }
 
         if (messages.length) {

@@ -4,6 +4,7 @@ import { ECIES_CONFIG, PrivateKey, PublicKey, decrypt, encrypt } from "eciesjs";
 import KeyDB from "@/utils/db.js";
 
 globalThis.Buffer = Buffer;
+globalThis.PrivateKey = PrivateKey;
 ECIES_CONFIG.ellipticCurve = "x25519";
 ECIES_CONFIG.symmetricAlgorithm = "xchacha20";
 
@@ -58,12 +59,17 @@ class EMachine {
     return new Promise((resolve, reject) => {
       db.get_active_key(pubkey)
         .then((obj) => {
-          var emachine = new EMachine(
-            obj.private,
-            obj.public,
-            obj.follow_pubkey,
-          );
-          resolve(emachine);
+          if (obj) {
+            var emachine = new EMachine(
+              obj.private,
+              obj.public,
+              obj.follow_pubkey,
+            );
+
+            resolve(emachine);
+          } else {
+            resolve(null);
+          }
         })
         .catch((e) => {
           reject(e);

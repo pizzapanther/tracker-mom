@@ -20,6 +20,8 @@ import { useQuasar } from "quasar";
 import { useRouter, useRoute } from "vue-router";
 
 import API from "@/api.js";
+import KeyDB from "@/utils/db.js";
+import EMachine from "@/utils/encrypt.js";
 
 export default {
   setup() {
@@ -31,6 +33,21 @@ export default {
     const router = useRouter();
     const route = useRoute();
 
+    async function restore_follows() {
+      var resp = await api.list_follows();
+      var follows = resp.data.items;
+      var db = new KeyDB();
+      await db.clear();
+
+      var updates = [];
+      follows.forEach((f) => {
+        var emachine = new EMachine(null, null, f.follow_pubkey);
+        updates.push({ id: f.id, pubkey: emachine.pubkey });
+      });
+
+      await api.rebuild_keys(updates);
+    }
+
     function onSubmit() {
       api
         .login(email.value, password.value)
@@ -41,6 +58,10 @@ export default {
         .then((resp) => {
           api.store_auth(resp.data);
           router.push(route.query.next);
+          return restore_follows();
+        })
+        .then((resp) => {
+          console.log("Restore Success");
         })
         .catch((err) => {
           console.log(err);

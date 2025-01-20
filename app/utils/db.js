@@ -26,6 +26,10 @@ class KeyDB {
   async inactive_follows() {
     return db.invited.toArray();
   }
+
+  async clear() {
+    await db.delete({ disableAutoOpen: false });
+  }
 }
 
 export default KeyDB;

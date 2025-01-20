@@ -65,9 +65,9 @@ export default {
     const markers = computed(() => {
       var ret = [];
       if (store.mylocation) {
+        center.value = [store.mylocation[0], store.mylocation[1]];
         ret.push([...store.mylocation, "Me"]);
       }
-      console.log(ret);
 
       return ret;
     });

@@ -42,7 +42,7 @@ class API {
     const token = ls.get("auth-token");
 
     if (token) {
-      this.auth_token = token;
+      this.restore_auth();
       return true;
     }
 
@@ -102,6 +102,14 @@ class API {
     return this.ax.post(
       "/api/v1/exchange/follow/accept",
       { code, pubkey },
+      this.auth_config(),
+    );
+  }
+
+  rebuild_keys(updates) {
+    return this.ax.post(
+      "/api/v1/exchange/follow/rebuild",
+      updates,
       this.auth_config(),
     );
   }

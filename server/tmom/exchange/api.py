@@ -16,6 +16,7 @@ from tmom.exchange.schema import (
   FollowInput,
   FollowSchema,
   RequestSchema,
+  RebuildInput,
   AcceptInput,
   AuthSchema,
   LocationShareInput,
@@ -84,6 +85,30 @@ def accept_location_share(request, data: AcceptInput):
   req.save()
 
   return f2
+
+
+@router.post("/follow/rebuild", response=List[FollowSchema])
+def rebuild_keys(request, data: List[RebuildInput]):
+  """
+  Rebuild Keys
+  """
+
+  if request.method == "OPTIONS":
+    return Follow.objects.none()
+
+  now = timezone.now()
+
+  for f in data:
+    follow = Follow.objects.filter(following=request.user, active=True).first()
+    if follow:
+      follow.active = False
+      follow.active_off_on = now
+      follow.save()
+
+      f1 = Follow(following=request.user, owner=follow.owner, follow_pubkey=f.pubkey)
+      f1.save()
+
+  return Follow.objects.filter(owner=request.user, active=True).order_by("-created")
 
 
 @router.get("/auth/check", response=AuthSchema)

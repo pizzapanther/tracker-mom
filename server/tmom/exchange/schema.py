@@ -65,7 +65,12 @@ class FollowSchema(ModelSchema):
 
   class Meta:
     model = Follow
-    fields = ["follow_pubkey", "created"]
+    fields = ["id", "follow_pubkey", "created"]
+
+
+class RebuildInput(Schema):
+  id: int
+  pubkey: str
 
 
 class AcceptInput(Schema):
