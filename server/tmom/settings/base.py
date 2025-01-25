@@ -85,7 +85,7 @@ WSGI_APPLICATION = "tmom.wsgi.application"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-  "default": dj_database_url.config(default='postgres://postgres:passyword@postgresql:5432/tmomdb')
+  "default": dj_database_url.config(default='postgres://postgres:passyword@postgresql:5432/djtmomdb')
 }
 
 

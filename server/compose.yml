@@ -12,31 +12,75 @@ services:
       - redis
       - postgresql
       - soketi
+      - soketi-app-manager
     shm_size: 4gb
 
   soketi:
-      image: quay.io/soketi/soketi:1.4-16-debian
-      ports:
-        - 6001:6001
-        - 9601:9601
-      environment:
-        - SOKETI_DB_REDIS_HOST=redis
-        - SOKETI_DB_REDIS_DB=3
+    image: quay.io/soketi/soketi:1.4-16-debian
+    ports:
+      - 6001:6001
+      - 9601:9601
+    environment:
+      - SOKETI_DB_REDIS_HOST=redis
+      - SOKETI_DB_REDIS_DB=3
+      - SOKETI_APP_MANAGER_DRIVER=postgres
+      - SOKETI_DB_POSTGRES_HOST=postgresql
+      - SOKETI_DB_POSTGRES_PORT=5432
+      - SOKETI_DB_POSTGRES_USERNAME=postgres
+      - SOKETI_DB_POSTGRES_PASSWORD=passyword
+      - SOKETI_DB_POSTGRES_DATABASE=tmomdb
+      - SOKETI_APP_MANAGER_POSTGRES_TABLE=apps
+      - SOKETI_APP_MANAGER_POSTGRES_VERSION=15.10
+      - SOKETI_APP_MANAGER_CACHE_ENABLED=true
+      - SOKETI_APP_MANAGER_CACHE_TTL=900
+      - SOKETI_CACHE_DRIVER=redis
+
+  soketi-app-manager:
+    image: ghcr.io/rahulhaque/soketi-app-manager-filament-alpine:latest
+    environment:
+      - AUTORUN_ENABLED=true
+      - AUTORUN_LARAVEL_MIGRATION=true
+      - APP_DEBUG=true
+      - APP_URL=http://localhost:8080
+      - APP_KEY=base64:aR3xjWm5jtNHvfQC3pF/H/zz/B1HpgXAMfbCsmA52+o=
+      - APP_ENV=production
+      - APP_NAME='Soketi App Manager'
+      - DB_CONNECTION=pgsql
+      - DB_HOST=postgresql
+      - DB_PORT=5432
+      - DB_DATABASE=tmomdb
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=passyword
+      - PUSHER_HOST=soketi
+      - PUSHER_PORT=6001
+      - PUSHER_SCHEME=http
+      - PUSHER_APP_CLUSTER=
+      - SOKETI_DB_REDIS_USERNAME=redis
+      - SOKETI_DB_REDIS_PASSWORD=redis
+      - SOKETI_DB_REDIS_HOST=redis
+      - SOKETI_DB_REDIS_DB=3
+      - METRICS_HOST=http://soketi:9601
+    ports:
+      - 8080:8080
+    depends_on:
+      - redis
+      - postgresql
+      - soketi
 
   redis:
-      image: 'bitnami/redis:latest'
-      ports:
-        - 6379
-      environment:
-        - ALLOW_EMPTY_PASSWORD=yes
+    image: 'bitnami/redis:latest'
+    ports:
+      - 6379:6379
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
 
   postgresql:
-      image: postgis/postgis:15-master
-      ports:
-        - 5432
-      volumes:
-        - "$HOME/pgdata/tmom:/var/lib/postgresql/data"
-      environment:
-        - POSTGRES_DB=tmomdb
-        - POSTGRES_USER=postgres
-        - POSTGRES_PASSWORD=passyword
+    image: postgis/postgis:15-master
+    ports:
+      - 5433:5432
+    volumes:
+      - "$HOME/pgdata/tmom:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_DB=tmomdb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=passyword

@@ -3,7 +3,9 @@ FROM bitnami/minideb:bookworm
 ARG userid
 ARG groupid
 
-RUN install_packages python3-full curl wget unzip pipx postgresql-client-common sudo nano
+RUN install_packages python3-full curl wget unzip pipx \
+  postgresql-client-common postgresql-client-15 \
+  sudo nano
 
 WORKDIR /tmp
 RUN wget -O scripts.zip https://gist.github.com/pizzapanther/e341fd980d8469724465018db657d529/archive/9feb4b9a6683b8534f9d906bdbafc24747740667.zip
