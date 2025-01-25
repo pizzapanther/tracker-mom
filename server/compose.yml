@@ -33,7 +33,13 @@ services:
       - SOKETI_APP_MANAGER_POSTGRES_VERSION=15.10
       - SOKETI_APP_MANAGER_CACHE_ENABLED=true
       - SOKETI_APP_MANAGER_CACHE_TTL=900
+      - SOKETI_DEBUG=false
+      - SOKETI_METRICS_ENABLED=true
+      - SOKETI_WEBHOOKS_BATCHING=true
+      - SOKETI_DB_POOLING_ENABLED=true
+      - SOKETI_QUEUE_DRIVER=redis
       - SOKETI_CACHE_DRIVER=redis
+      - SOKETI_RATE_LIMITER_DRIVER=redis
 
   soketi-app-manager:
     image: ghcr.io/rahulhaque/soketi-app-manager-filament-alpine:latest
@@ -55,10 +61,10 @@ services:
       - PUSHER_PORT=6001
       - PUSHER_SCHEME=http
       - PUSHER_APP_CLUSTER=
-      - SOKETI_DB_REDIS_USERNAME=redis
-      - SOKETI_DB_REDIS_PASSWORD=redis
-      - SOKETI_DB_REDIS_HOST=redis
-      - SOKETI_DB_REDIS_DB=3
+      - REDIS_USERNAME=redis
+      - REDIS_PASSWORD=redis
+      - REDIS_HOST=redis
+      - REDIS_DB=3
       - METRICS_HOST=http://soketi:9601
     ports:
       - 8080:8080
