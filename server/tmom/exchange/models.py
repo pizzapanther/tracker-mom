@@ -35,7 +35,7 @@ class Follow(models.Model):
 
 class FollowRequest(models.Model):
   owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-  code = models.CharField(max_length=15)
+  code = models.CharField(max_length=155)
 
   pubkey = models.TextField()
 

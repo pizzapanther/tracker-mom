@@ -17,8 +17,9 @@ export const useAppStore = defineStore("appstate", {
   actions: {
     async create_invite() {
       var emachine = new EMachine();
-      await api.create_invite(emachine.pubkey);
+      let resp = await api.create_invite(emachine.pubkey);
       emachine.store_invited_key();
+      return resp.data.url;
     },
     isAuthenticated() {
       return api.isAuthenticated();
