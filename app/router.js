@@ -1,7 +1,5 @@
 import { createWebHashHistory, createRouter } from "vue-router";
 
-import API from "@/services/api.js";
-
 import NotFound from "@/components/not-found.vue";
 
 import HomeView from "@/home/home.vue";
@@ -28,13 +26,11 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  var api = new API();
   const store = useAppStore();
 
   if (to.name == "auth-login") {
     next();
-  } else if (api.isAuthenticated()) {
-    store.authenticated = true;
+  } else if (store.isAuthenticated()) {
     next();
   } else {
     next({ name: "auth-login", query: { next: to.path } });

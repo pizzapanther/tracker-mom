@@ -56,17 +56,17 @@ export default {
     function refresh_follows() {
       loading.value = true;
       error.value = "";
-
-      store
-        .get_follows()
-        .then((data) => {})
-        .catch((e) => {
-          console.error(e);
-          error.value = "Error loading Follows from server";
-        })
-        .finally(() => {
-          loading.value = false;
-        });
+      loading.value = false;
+      // store
+      //   .get_follows()
+      //   .then((data) => {})
+      //   .catch((e) => {
+      //     console.error(e);
+      //     error.value = "Error loading Follows from server";
+      //   })
+      //   .finally(() => {
+      //     loading.value = false;
+      //   });
     }
 
     refresh_follows();
