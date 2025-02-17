@@ -1,6 +1,7 @@
 <template>
   <tmom-title>Invite a Follower</tmom-title>
   <br />
+  <q-inner-loading :showing="loading" label="Loading..." />
   <div v-if="invite">
     <h3>Invite {{ count }} - Send Via:</h3>
     <em>Use this invite only once</em>
@@ -34,11 +35,13 @@ export default {
 
     var invite = ref(null);
     var error = ref(null);
+    var loading = ref(false);
     var count = ref(0);
     var links = ref({});
 
     function new_invite() {
       error.value = null;
+      loading.value = true;
 
       store
         .create_invite()
@@ -57,14 +60,17 @@ export default {
             email: `mailto:?subject=${encodeURIComponent(subject)}&body=${ebody}`,
             sms: `sms:?&body=${encodeURIComponent(tbody)}`,
           };
+
+          loading.value = false;
         })
         .catch((err) => {
           console.error(err);
           error.value = "Error creating invite.";
+          loading.value = false;
         });
     }
 
-    return { new_invite, error, invite, count, links };
+    return { new_invite, error, invite, count, links, loading };
   },
 };
 </script>
