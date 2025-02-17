@@ -1,5 +1,5 @@
 import { registerPlugin, Capacitor } from "@capacitor/core";
-import useAppStore from "@/store.js";
+import useAppStore from "@/services/store.js";
 
 const platform = Capacitor.getPlatform();
 if (platform != "web") {
@@ -57,7 +57,7 @@ export function app_bg_watcher(store) {
 
 function web_bg_watcher(store) {
   navigator.geolocation.watchPosition(async (position) => {
-    await store.report_location(position.coords);
+    // await store.report_location(position.coords);
   });
 }
 
@@ -76,7 +76,7 @@ export function start_bg_watcher() {
     app_bg_watcher(store);
   }
 
-  setTimeout(async () => await pull_locations(store), 3000);
+  // setTimeout(async () => await pull_locations(store), 3000);
 }
 
 export default start_bg_watcher;

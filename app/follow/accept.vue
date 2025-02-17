@@ -20,7 +20,7 @@ import { useRoute, useRouter } from "vue-router";
 
 import EMachine from "@/utils/encrypt.js";
 
-import API from "@/api.js";
+import API from "@/services/api.js";
 
 export default {
   setup() {

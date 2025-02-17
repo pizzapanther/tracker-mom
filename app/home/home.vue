@@ -35,7 +35,7 @@ import {
 } from "@vue-leaflet/vue-leaflet";
 import JsGravatar from "js-gravatar";
 
-import useAppStore from "@/store.js";
+import useAppStore from "@/services/store.js";
 
 export default {
   components: {
@@ -50,17 +50,6 @@ export default {
     const map = ref(null);
     const center = ref([29.88438040455563, -98.2429306131633]);
     const locations = ref([]);
-
-    watch(store.locations, (oldValue, newValue) => {
-      console.log("Locations", newValue);
-      let new_locations = [];
-
-      for (let id in newValue) {
-        new_locations.push(newValue[id]);
-      }
-
-      locations.value = new_locations;
-    });
 
     const markers = computed(() => {
       var ret = [];

@@ -26,7 +26,7 @@
 <script>
 import { ref } from "vue";
 
-import API from "@/api.js";
+import API from "@/services/api.js";
 import EMachine from "@/utils/encrypt.js";
 
 export default {

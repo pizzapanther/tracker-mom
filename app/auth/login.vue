@@ -19,7 +19,7 @@ import { ref } from "vue";
 import { useQuasar } from "quasar";
 import { useRouter, useRoute } from "vue-router";
 
-import API from "@/api.js";
+import API from "@/services/api.js";
 import KeyDB from "@/utils/db.js";
 import EMachine from "@/utils/encrypt.js";
 

@@ -1,6 +1,6 @@
 import { createWebHashHistory, createRouter } from "vue-router";
 
-import API from "@/api.js";
+import API from "@/services/api.js";
 
 import NotFound from "@/components/not-found.vue";
 
@@ -11,7 +11,7 @@ import FollowList from "@/follow/follow-list.vue";
 import FollowInvite from "@/follow/invite.vue";
 import AcceptInvite from "@/follow/accept.vue";
 
-import useAppStore from "@/store.js";
+import useAppStore from "@/services/store.js";
 
 const routes = [
   { path: "/", component: HomeView, name: "home" },

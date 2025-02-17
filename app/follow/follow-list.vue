@@ -45,7 +45,7 @@
 import { ref } from "vue";
 import { mapState } from "pinia";
 
-import useAppStore from "@/store.js";
+import useAppStore from "@/services/store.js";
 
 export default {
   setup() {

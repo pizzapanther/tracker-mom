@@ -26,8 +26,8 @@
   </q-layout>
 </template>
 <script>
-import start_bg_watcher from "@/bg-location.js";
-import useAppStore from "@/store.js";
+import start_bg_watcher from "@/services/bg-location.js";
+import useAppStore from "@/services/store.js";
 
 import tmomImg from "@/img/tmom-192.png";
 
@@ -39,15 +39,15 @@ export default {
     store.$subscribe((mutation, state) => {
       console.log("Auth", state.authenticated);
     });
-    store
-      .get_follows()
-      .then((data) => {
-        console.log("Follows Loaded", data);
-      })
-      .catch((e) => {
-        console.error(e);
-        console.log("Ignoring On Load Error");
-      });
+    // store
+    //   .get_follows()
+    //   .then((data) => {
+    //     console.log("Follows Loaded", data);
+    //   })
+    //   .catch((e) => {
+    //     console.error(e);
+    //     console.log("Ignoring On Load Error");
+    //   });
 
     return { tmomImg };
   },
