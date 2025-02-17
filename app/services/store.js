@@ -14,6 +14,9 @@ export const useAppStore = defineStore("appstate", {
   },
   getters: {},
   actions: {
+    async create_invite() {
+
+    },
     isAuthenticated() {
       return api.isAuthenticated();
     },

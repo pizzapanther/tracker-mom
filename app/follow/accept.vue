@@ -18,7 +18,7 @@ import { ref } from "vue";
 import { useQuasar } from "quasar";
 import { useRoute, useRouter } from "vue-router";
 
-import EMachine from "@/utils/encrypt.js";
+import EMachine from "@/services/encrypt.js";
 
 import API from "@/services/api.js";
 

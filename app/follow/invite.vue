@@ -14,7 +14,7 @@
     </q-btn>
     <br /><br />
     <strong>URL:</strong> &nbsp;
-    <span>{{ invite.url }}</span>
+    <span>{{ invite }}</span>
     <br /><br />
     <q-btn color="primary" @click="new_invite"> Create Another Invite </q-btn>
   </div>
@@ -26,25 +26,24 @@
 <script>
 import { ref } from "vue";
 
-import API from "@/services/api.js";
-import EMachine from "@/utils/encrypt.js";
+import useAppStore from "@/services/store.js";
 
 export default {
   setup() {
-    var api = new API();
+    const store = useAppStore();
+
     var invite = ref(null);
     var error = ref(null);
     var count = ref(0);
     var links = ref({});
 
     function new_invite() {
-      var emachine = new EMachine();
       error.value = null;
 
-      api
-        .create_invite(emachine.pubkey)
-        .then((resp) => {
-          invite.value = resp.data;
+      store
+        .create_invite()
+        .then((url) => {
+          invite.value = url;
           count.value += 1;
 
           let subject = `Follow Me On Tracker.Mom`;
@@ -52,18 +51,16 @@ export default {
             "Come follow me and share your location on Tracker.mom. Use the link to join.";
           let post =
             "Tracker.Mom is the secure and private location sharing app for family and friends.";
-          let tbody = `${intro} ${resp.data.url}`;
-          let ebody = `${encodeURIComponent(intro + "<br><br>")}${encodeURIComponent(resp.data.url + "<br><br>")}${encodeURIComponent(post)}`;
+          let tbody = `${intro} ${url}`;
+          let ebody = `${encodeURIComponent(intro + "<br><br>")}${encodeURIComponent(url + "<br><br>")}${encodeURIComponent(post)}`;
           links.value = {
             email: `mailto:?subject=${encodeURIComponent(subject)}&body=${ebody}`,
             sms: `sms:?&body=${encodeURIComponent(tbody)}`,
           };
-
-          emachine.store_invited_key();
         })
-        .catch((e) => {
-          console.error(e);
-          error.value = "Error Creating Invite";
+        .catch((err) => {
+          console.error(err);
+          error.value = "Error creating invite.";
         });
     }
 
