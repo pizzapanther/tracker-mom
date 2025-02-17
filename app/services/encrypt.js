@@ -1,7 +1,7 @@
 import { Buffer } from "buffer";
 import { ECIES_CONFIG, PrivateKey, PublicKey, decrypt, encrypt } from "eciesjs";
 
-import KeyDB from "@/utils/db.js";
+import KeyDB from "@/services/db.js";
 
 globalThis.Buffer = Buffer;
 globalThis.PrivateKey = PrivateKey;

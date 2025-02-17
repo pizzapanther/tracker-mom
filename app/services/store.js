@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 
 import API from "@/services/api.js";
+import EMachine from "@/services/encrypt.js";
 
 var api = new API();
 
@@ -15,7 +16,9 @@ export const useAppStore = defineStore("appstate", {
   getters: {},
   actions: {
     async create_invite() {
-
+      var emachine = new EMachine();
+      await api.create_invite(emachine.pubkey);
+      emachine.store_invited_key();
     },
     isAuthenticated() {
       return api.isAuthenticated();
